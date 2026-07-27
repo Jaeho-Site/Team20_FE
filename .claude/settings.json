@@ -52,6 +52,16 @@
       "Bash(echo *)",
       "Bash(node --version)",
       "Bash(node -e *)",
+      "Bash(git push origin *)",
+      "Bash(gh auth status)",
+      "Bash(gh repo view *)",
+      "Bash(gh repo set-default *)",
+      "Bash(gh pr list *)",
+      "Bash(gh pr view *)",
+      "Bash(gh pr diff *)",
+      "Bash(gh pr checks *)",
+      "Bash(gh pr status)",
+      "Bash(gh pr create --repo Jaeho-Site/Team20_FE *)",
       "Bash(python --version)",
       "Bash(py --version)",
       "WebFetch(domain:code.claude.com)",
@@ -61,14 +71,12 @@
       "WebFetch(domain:nextjs.org)"
     ],
     "ask": [
-      "Bash(git push *)",
       "Bash(git commit *)",
       "Bash(git reset --hard *)",
       "Bash(git clean *)",
       "Bash(git checkout *)",
       "Bash(npm run dev)",
-      "Bash(npm uninstall *)",
-      "Bash(gh pr *)"
+      "Bash(npm uninstall *)"
     ],
     "deny": [
       "Read(./.env)",
@@ -90,6 +98,10 @@
       "Bash(wget *)",
       "Bash(git push --force *)",
       "Bash(git push -f *)",
+      "Bash(git push upstream *)",
+      "Bash(git push origin --force *)",
+      "Bash(git push origin -f *)",
+      "Bash(git remote add upstream *)",
       "Bash(npm publish *)",
       "Bash(*deploy.ps1*)",
       "Bash(*build-and-push.ps1*)",
@@ -107,6 +119,15 @@
           {
             "type": "command",
             "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/guard-protected-files.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/guard-upstream.mjs\""
           }
         ]
       }

@@ -11,6 +11,7 @@ CLAUDE.md                     항상 로드되는 프로젝트 지침 (약 70줄
   settings.local.json         개인 오버라이드 (gitignore)
   hooks/
     guard-protected-files.mjs PreToolUse — 보호 파일 편집 차단 (exit 2)
+    guard-upstream.mjs        PreToolUse(Bash) — 팀 저장소(fork 부모)로 향하는 push·PR·API 차단
     format-edited.mjs         PostToolUse — 편집한 파일만 prettier
     session-context.mjs       SessionStart(compact) — 압축 후 핵심 규칙 재주입
   statusline.mjs              모델·컨텍스트%·비용·5h 사용량 표시
@@ -62,7 +63,7 @@ Claude Code를 종료하고 다시 실행 → /agents, /permissions 로 인식 �
 |---|---|
 | 브라우저에서 화면을 반복 확인하게 됨 | Playwright MCP (`claude mcp add playwright -- npx -y @playwright/mcp@latest`) |
 | 타입 오류를 빌드까지 가서야 발견 | `/plugin install typescript-lsp@claude-plugins-official` |
-| GitHub 이슈·PR을 계속 복붙 | GitHub MCP 또는 `gh` CLI 허용 규칙 |
+| ~~GitHub 이슈·PR을 계속 복붙~~ | 적용됨: `gh` CLI 허용 규칙 + `guard-upstream.mjs`. PR은 `--repo Jaeho-Site/Team20_FE` 명시 시에만 통과. MCP 대신 gh를 택한 이유: 툴 스키마 상시 토큰 0, Bash 훅 가드가 그대로 적용됨 |
 | 같은 지시를 세 번 반복 | 새 skill |
 | 같은 실수를 두 번 목격 | CLAUDE.md 한 줄 추가 → 반복되면 hook으로 승격 |
 
