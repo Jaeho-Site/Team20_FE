@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(npm ci)",
+      "Bash(npm ls *)",
+      "Bash(npm run lint)",
+      "Bash(npm run lint:fix)",
+      "Bash(npm run type-check)",
+      "Bash(npm run build)",
+      "Bash(npm run ci)",
+      "Bash(npm run format)",
+      "Bash(npm run format:check)",
+      "Bash(npm run build-storybook)",
+      "Bash(npm run test:e2e)",
+      "Bash(npm run test:e2e:report)",
+      "Bash(cd nextjs && npm install)",
+      "Bash(cd nextjs && npm ci)",
+      "Bash(cd nextjs && npm ls *)",
+      "Bash(cd nextjs && npm run ci)",
+      "Bash(cd nextjs && npm run lint)",
+      "Bash(cd nextjs && npm run lint:fix)",
+      "Bash(cd nextjs && npm run type-check)",
+      "Bash(cd nextjs && npm run build)",
+      "Bash(cd nextjs && npm run format)",
+      "Bash(cd nextjs && npm run format:check)",
+      "Bash(npx tsc *)",
+      "Bash(npx eslint *)",
+      "Bash(npx prettier *)",
+      "Bash(npx playwright *)",
+      "Bash(npx vite build *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git show *)",
+      "Bash(git blame *)",
+      "Bash(git branch *)",
+      "Bash(git ls-files *)",
+      "Bash(git stash list *)",
+      "Bash(git rev-parse *)",
+      "Bash(git worktree list *)",
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(find *)",
+      "Bash(rg *)",
+      "Bash(wc *)",
+      "Bash(du *)",
+      "Bash(sort *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(echo *)",
+      "Bash(node --version)",
+      "Bash(node -e *)",
+      "Bash(python --version)",
+      "Bash(py --version)",
+      "WebFetch(domain:code.claude.com)",
+      "WebFetch(domain:tanstack.com)",
+      "WebFetch(domain:react-hook-form.com)",
+      "WebFetch(domain:zod.dev)",
+      "WebFetch(domain:nextjs.org)"
+    ],
+    "ask": [
+      "Bash(git push *)",
+      "Bash(git commit *)",
+      "Bash(git reset --hard *)",
+      "Bash(git clean *)",
+      "Bash(git checkout *)",
+      "Bash(npm run dev)",
+      "Bash(npm uninstall *)",
+      "Bash(gh pr *)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(//**/.env)",
+      "Read(//**/.env.*)",
+      "Read(./.cert/**)",
+      "Read(./package-lock.json)",
+      "Read(./nextjs/package-lock.json)",
+      "Read(./dist/**)",
+      "Read(./nextjs/.next/**)",
+      "Read(./storybook-static/**)",
+      "Read(./coverage/**)",
+      "Read(./playwright-report/**)",
+      "Read(./test-results/**)",
+      "Read(//**/node_modules/**)",
+      "Read(//**/__pycache__/**)",
+      "Bash(curl *)",
+      "Bash(wget *)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(npm publish *)",
+      "Bash(*deploy.ps1*)",
+      "Bash(*build-and-push.ps1*)",
+      "Bash(*setup_vpc.ps1*)",
+      "Bash(gcloud *)",
+      "Bash(kubectl *)",
+      "Bash(docker *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/guard-protected-files.mjs\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/format-edited.mjs\""
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/session-context.mjs\""
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/statusline.mjs\""
+  }
+}
