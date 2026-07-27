@@ -42,7 +42,8 @@ process.stdin.on('end', () => {
 
   // 3. PR 변형 명령은 --repo/-R로 fork를 명시했을 때만 통과
   //    (fork에서 gh pr create의 기본 base는 부모 저장소다)
-  const pr = cmd.match(/\bgh\s+pr\s+(create|merge|close|edit|comment|review|ready|reopen|lock|unlock)\b/);
+  // gh 또는 gh.exe(전체 경로 호출 포함) 모두 매칭
+  const pr = cmd.match(/\bgh(?:\.exe)?["']?\s+pr\s+(create|merge|close|edit|comment|review|ready|reopen|lock|unlock)\b/);
   if (pr) {
     const explicitFork = new RegExp(`(--repo|-R)[=\\s]+["']?${FORK.replace('/', '\\/')}\\b`, 'i');
     if (!explicitFork.test(cmd)) {
@@ -52,7 +53,7 @@ process.stdin.on('end', () => {
 
   // 4. gh api 쓰기 요청(-X POST/PATCH/PUT/DELETE 또는 -f/-F 필드 = 암묵적 POST)은
   //    대상에 fork 소유자가 명시돼 있을 때만 통과
-  if (/\bgh\s+api\b/.test(cmd)) {
+  if (/\bgh(?:\.exe)?["']?\s+api\b/.test(cmd)) {
     const mutating = /(-X|--method)[=\s]+["']?(POST|PATCH|PUT|DELETE)/i.test(cmd) || /\s(-[fF]|--field|--raw-field)[=\s]/.test(cmd);
     if (mutating && !/jaeho-site/i.test(cmd)) {
       block('gh api 쓰기 요청에 대상 저장소(Jaeho-Site/...)가 명시돼 있지 않다. {owner}는 부모 저장소로 풀릴 수 있다.');
