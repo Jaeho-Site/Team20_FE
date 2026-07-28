@@ -10,7 +10,15 @@ import prettierConfig from 'eslint-config-prettier';
 
 export default tseslint.config(
   {
-    ignores: ['dist', 'storybook-static', '**/*.gen.ts', 'routeTree.gen.ts', 'nextjs/**','functions/**'],
+    ignores: [
+      'dist',
+      'storybook-static',
+      '**/*.gen.ts',
+      'routeTree.gen.ts',
+      'nextjs/**',
+      'functions/**',
+      '.claude/**',
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
