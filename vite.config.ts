@@ -74,6 +74,16 @@ export default defineConfig(({ mode }) => {
     test: {
       projects: [
         {
+          // extends: true를 쓰면 TanStackRouterVite가 테스트 실행마다 routeTree.gen.ts를
+          // 재기록하므로 필요한 플러그인(경로 별칭)만 명시한다.
+          plugins: [tsconfigPaths()],
+          test: {
+            name: 'unit',
+            environment: 'node',
+            include: ['src/**/*.test.{ts,tsx}'],
+          },
+        },
+        {
           extends: true,
           plugins: [
             storybookTest({
