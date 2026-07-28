@@ -38,6 +38,12 @@ export default tseslint.config(
     },
   },
   {
+    files: ['scripts/**/*.mjs'],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
+  {
     files: ['.storybook/**/*.{ts,tsx}'],
     rules: {
       'react-refresh/only-export-components': 'off',

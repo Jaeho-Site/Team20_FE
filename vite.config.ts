@@ -11,6 +11,15 @@ import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 const dirname =
   typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
 
+const apiProxy = (env: Record<string, string>) => ({
+  '^/api': {
+    target: env.VITE_BACKEND_URL || 'https://k-spot.kro.kr/api',
+    changeOrigin: true,
+    secure: false,
+    rewrite: (path: string) => path.replace(/^\/api/, ''),
+  },
+});
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
@@ -62,14 +71,12 @@ export default defineConfig(({ mode }) => {
       },
     },
     server: {
-      proxy: {
-        '^/api': {
-          target: env.VITE_BACKEND_URL || 'https://k-spot.kro.kr/api',
-          changeOrigin: true,
-          secure: false,
-          rewrite: (path) => path.replace(/^\/api/, ''),
-        },
-      },
+      proxy: apiProxy(env),
+    },
+    // vite preview는 server.proxy를 쓰지 않는다 — npm run measure가 실제 콘텐츠·이미지를
+    // 로드한 상태로 측정하려면 preview에도 같은 프록시가 필요하다.
+    preview: {
+      proxy: apiProxy(env),
     },
     test: {
       projects: [
