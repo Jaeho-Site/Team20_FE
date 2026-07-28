@@ -1,0 +1,3 @@
+# TanStack Router 플러그인이 LF로 재생성하는 파일 — autocrlf 환경에서 유령 diff(M 표시, 내용 0줄)를 막는다
+src/routeTree.gen.ts text eol=lf
+public/mockServiceWorker.js text eol=lf

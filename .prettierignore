@@ -1,0 +1,3 @@
+# 생성물 — 생성기 원본 포맷을 유지한다 (prettier가 재포맷하면 재생성 때마다 diff 루프가 생긴다)
+public/mockServiceWorker.js
+src/routeTree.gen.ts
