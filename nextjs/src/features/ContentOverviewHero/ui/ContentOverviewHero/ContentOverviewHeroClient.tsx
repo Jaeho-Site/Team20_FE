@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ContentOverviewInfo } from '../ContentOverviewInfo/ContentOverviewInfo';
 import { ContentOverviewActionButtons } from '../ContentOverviewActionButton/ContentOverviewActionButtons';
@@ -16,6 +17,7 @@ export function ContentOverviewHeroClient({
   contentLocationsCount,
 }: ContentOverviewHeroClientProps) {
   const router = useRouter();
+  const poster = contentDetail.posterImageUrl?.trim();
 
   const handleMapViewClick = () => {
     router.push(`/content/${contentDetail.contentId}/map`);
@@ -25,12 +27,16 @@ export function ContentOverviewHeroClient({
     <section className="bg-gradient-to-t from-[var(--color-gray-800)] to-[var(--color-gray-900)]">
       <div className="mx-auto max-w-7xl px-[var(--spacing-4)] sm:px-[var(--spacing-6)] lg:px-[var(--spacing-8)]">
         <div className="relative h-[40rem] md:h-[56rem] lg:h-[64rem] rounded-2xl overflow-hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={contentDetail.posterImageUrl?.trim()}
-            alt={contentDetail.title}
-            className="absolute inset-0 w-full h-full object-contain rounded-2xl"
-          />
+          {poster && (
+            <Image
+              src={poster}
+              alt={contentDetail.title}
+              fill
+              priority
+              sizes="(max-width: 1280px) 100vw, 1280px"
+              className="object-contain rounded-2xl"
+            />
+          )}
         </div>
 
         <div className="text-gray-900 ">

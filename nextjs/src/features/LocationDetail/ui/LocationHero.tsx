@@ -1,11 +1,15 @@
 'use client';
 
+import Image from 'next/image';
 import { MapPin, Copy, Navigation } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { Button } from '@/shared/ui';
 import type { LocationHeroProps } from '../model/types';
 
 export function LocationHero({ location }: LocationHeroProps) {
+  const heroSrc = (
+    location.imageUrl && location.imageUrl.length > 0 ? location.imageUrl[0] : location.locationImage
+  )?.trim();
   const kakaoToLink = `https://map.kakao.com/link/to/${encodeURIComponent(
     location.name,
   )},${location.latitude},${location.longitude}`;
@@ -28,12 +32,16 @@ export function LocationHero({ location }: LocationHeroProps) {
     <header className="relative mx-auto max-w-6xl px-4">
       <div className="relative rounded-3xl overflow-hidden shadow-2xl group">
         <div className="aspect-[16/9] relative overflow-hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={(location.imageUrl && location.imageUrl.length > 0 ? location.imageUrl[0] : location.locationImage)?.trim()}
-            alt={location.name}
-            className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-          />
+          {heroSrc && (
+            <Image
+              src={heroSrc}
+              alt={location.name}
+              fill
+              priority
+              sizes="(max-width: 1152px) 100vw, 1152px"
+              className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+            />
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
         </div>
 
