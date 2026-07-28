@@ -1,0 +1,35 @@
+{
+  "commit": "42059b36691c60d18abaf8622524a36eb613fe3f",
+  "commitShort": "42059b3",
+  "branch": "refactor/phase0-measurement-base",
+  "dirty": true,
+  "label": "C-before-img",
+  "target": "nextjs",
+  "routes": [
+    "/location/1",
+    "/content/1"
+  ],
+  "notes": "실험 C before (A안: img 3곳). MSW 고정 픽스처, 커밋 42059b3",
+  "mock": true,
+  "skipBuild": false,
+  "backendEnvVar": null,
+  "measuredAt": "2026-07-28T18:26:02.580Z",
+  "finishedAt": "2026-07-28T18:30:51.247Z",
+  "node": "v22.14.0",
+  "lighthouse": {
+    "runsPerRoute": 5,
+    "formFactor": "mobile",
+    "throttlingMethod": "simulate",
+    "onlyCategories": "performance",
+    "chromeFlags": "--headless=new",
+    "version": "12.8.2"
+  },
+  "playwright": {
+    "viewport": {
+      "width": 412,
+      "height": 823
+    },
+    "deviceScaleFactor": 1.75,
+    "chromePath": "C:\\Users\\725c4\\AppData\\Local\\ms-playwright\\chromium-1194\\chrome-win\\chrome.exe"
+  }
+}

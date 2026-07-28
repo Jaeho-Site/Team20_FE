@@ -1,0 +1,38 @@
+{
+  "requestCount": 4,
+  "failedImageRequests": 0,
+  "totalTransferBytes": 231767,
+  "byFormat": {
+    "image/avif": 4
+  },
+  "images": [
+    {
+      "url": "http://localhost:3100/_next/image?url=%2Fmock-assets%2Fsquidgame-spotdetail.jpg&w=750&q=75",
+      "status": 200,
+      "contentType": "image/avif",
+      "transferBytes": 80356,
+      "bodyBytes": 79923
+    },
+    {
+      "url": "http://localhost:3100/_next/image?url=%2Fmock-assets%2Fsquidgame-spotdetail4.png&w=750&q=75",
+      "status": 200,
+      "contentType": "image/avif",
+      "transferBytes": 61634,
+      "bodyBytes": 61200
+    },
+    {
+      "url": "http://localhost:3100/_next/image?url=%2Fmock-assets%2Fsquidgame-spotdetail2.jpg&w=750&q=75",
+      "status": 200,
+      "contentType": "image/avif",
+      "transferBytes": 50974,
+      "bodyBytes": 50540
+    },
+    {
+      "url": "http://localhost:3100/_next/image?url=%2Fmock-assets%2Fsquidgame-spotdetail3.png&w=750&q=75",
+      "status": 200,
+      "contentType": "image/avif",
+      "transferBytes": 38803,
+      "bodyBytes": 38369
+    }
+  ]
+}

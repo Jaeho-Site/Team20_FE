@@ -1,0 +1,35 @@
+{
+  "commit": "ca61b05a2b9e49aeccae1cdb63861576b00898d4",
+  "commitShort": "ca61b05",
+  "branch": "refactor/phase0-measurement-base",
+  "dirty": true,
+  "label": "C-after-next-image",
+  "target": "nextjs",
+  "routes": [
+    "/location/1",
+    "/content/1"
+  ],
+  "notes": "실험 C after (B안: next/image 3곳, priority+fill+sizes). MSW 고정 픽스처, before와 같은 세션 연속 측정",
+  "mock": true,
+  "skipBuild": false,
+  "backendEnvVar": null,
+  "measuredAt": "2026-07-28T18:34:32.130Z",
+  "finishedAt": "2026-07-28T18:39:17.936Z",
+  "node": "v22.14.0",
+  "lighthouse": {
+    "runsPerRoute": 5,
+    "formFactor": "mobile",
+    "throttlingMethod": "simulate",
+    "onlyCategories": "performance",
+    "chromeFlags": "--headless=new",
+    "version": "12.8.2"
+  },
+  "playwright": {
+    "viewport": {
+      "width": 412,
+      "height": 823
+    },
+    "deviceScaleFactor": 1.75,
+    "chromePath": "C:\\Users\\725c4\\AppData\\Local\\ms-playwright\\chromium-1194\\chrome-win\\chrome.exe"
+  }
+}

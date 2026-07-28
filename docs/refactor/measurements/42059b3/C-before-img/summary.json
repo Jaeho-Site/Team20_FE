@@ -1,0 +1,205 @@
+{
+  "routes": {
+    "/location/1": {
+      "lighthouse": {
+        "medians": {
+          "perfScore": 0.57,
+          "lcpMs": 5524.377299999998,
+          "fcpMs": 1064.4634999999998,
+          "cls": 0,
+          "tbtMs": 690.77595,
+          "speedIndexMs": 4881.888871186354,
+          "ttiMs": 5983.312760000001,
+          "totalByteWeight": 2300121
+        },
+        "medianRunForHtml": 1,
+        "runs": [
+          {
+            "run": 1,
+            "perfScore": 0.55,
+            "lcpMs": 5524.377299999998,
+            "fcpMs": 1072.76325,
+            "cls": 0,
+            "tbtMs": 931.5164499999996,
+            "speedIndexMs": 5026.456054351926,
+            "ttiMs": 6176.195627499999,
+            "totalByteWeight": 2300121,
+            "finalPath": "/location/1",
+            "redirected": false,
+            "lighthouseVersion": "12.8.2",
+            "fetchTime": "2026-07-28T18:26:23.106Z"
+          },
+          {
+            "run": 2,
+            "perfScore": 0.6,
+            "lcpMs": 5294.330674999998,
+            "fcpMs": 1064.1879999999999,
+            "cls": 0,
+            "tbtMs": 690.77595,
+            "speedIndexMs": 4944.890895413459,
+            "ttiMs": 5749.764359999999,
+            "totalByteWeight": 2300121,
+            "finalPath": "/location/1",
+            "redirected": false,
+            "lighthouseVersion": "12.8.2",
+            "fetchTime": "2026-07-28T18:26:51.921Z"
+          },
+          {
+            "run": 3,
+            "perfScore": 0.55,
+            "lcpMs": 9700.6121,
+            "fcpMs": 1148.6810999999998,
+            "cls": 0,
+            "tbtMs": 678.9999999999995,
+            "speedIndexMs": 4705.4263833806845,
+            "ttiMs": 9963.478550000002,
+            "totalByteWeight": 2300121,
+            "finalPath": "/location/1",
+            "redirected": false,
+            "lighthouseVersion": "12.8.2",
+            "fetchTime": "2026-07-28T18:27:19.677Z"
+          },
+          {
+            "run": 4,
+            "perfScore": 0.6,
+            "lcpMs": 5574.6234,
+            "fcpMs": 1063.9687500000002,
+            "cls": 0,
+            "tbtMs": 667.8863999999999,
+            "speedIndexMs": 4881.888871186354,
+            "ttiMs": 5900.336920000002,
+            "totalByteWeight": 2300121,
+            "finalPath": "/location/1",
+            "redirected": false,
+            "lighthouseVersion": "12.8.2",
+            "fetchTime": "2026-07-28T18:27:47.127Z"
+          },
+          {
+            "run": 5,
+            "perfScore": 0.57,
+            "lcpMs": 5486.277725000001,
+            "fcpMs": 1064.4634999999998,
+            "cls": 0,
+            "tbtMs": 795.6149500000001,
+            "speedIndexMs": 4872.687438721541,
+            "ttiMs": 5983.312760000001,
+            "totalByteWeight": 2300121,
+            "finalPath": "/location/1",
+            "redirected": false,
+            "lighthouseVersion": "12.8.2",
+            "fetchTime": "2026-07-28T18:28:14.759Z"
+          }
+        ]
+      },
+      "images": {
+        "requestCount": 4,
+        "failedImageRequests": 0,
+        "totalTransferBytes": 1893206,
+        "byFormat": {
+          "image/jpeg": 2,
+          "image/png": 2
+        }
+      }
+    },
+    "/content/1": {
+      "lighthouse": {
+        "medians": {
+          "perfScore": 0.56,
+          "lcpMs": 9629.363699999998,
+          "fcpMs": 1107.5865000000001,
+          "cls": 0,
+          "tbtMs": 761.0000000000002,
+          "speedIndexMs": 3198.9238860153678,
+          "ttiMs": 9779.64285,
+          "totalByteWeight": 1817177
+        },
+        "medianRunForHtml": 4,
+        "runs": [
+          {
+            "run": 1,
+            "perfScore": 0.6,
+            "lcpMs": 9557.496374999999,
+            "fcpMs": 1162.36925,
+            "cls": 0,
+            "tbtMs": 570,
+            "speedIndexMs": 3198.9238860153678,
+            "ttiMs": 9715.2841275,
+            "totalByteWeight": 1817178,
+            "finalPath": "/content/1",
+            "redirected": false,
+            "lighthouseVersion": "12.8.2",
+            "fetchTime": "2026-07-28T18:28:47.064Z"
+          },
+          {
+            "run": 2,
+            "perfScore": 0.53,
+            "lcpMs": 9630.329700000002,
+            "fcpMs": 1121.8437999999999,
+            "cls": 0,
+            "tbtMs": 900,
+            "speedIndexMs": 3214.7857298762992,
+            "ttiMs": 9780.582150000002,
+            "totalByteWeight": 1817177,
+            "finalPath": "/content/1",
+            "redirected": false,
+            "lighthouseVersion": "12.8.2",
+            "fetchTime": "2026-07-28T18:29:12.645Z"
+          },
+          {
+            "run": 3,
+            "perfScore": 0.56,
+            "lcpMs": 9630.755399999998,
+            "fcpMs": 1078.8952000000002,
+            "cls": 0,
+            "tbtMs": 761.0000000000002,
+            "speedIndexMs": 3218.9197004171047,
+            "ttiMs": 9781.0479,
+            "totalByteWeight": 1817177,
+            "finalPath": "/content/1",
+            "redirected": false,
+            "lighthouseVersion": "12.8.2",
+            "fetchTime": "2026-07-28T18:29:38.443Z"
+          },
+          {
+            "run": 4,
+            "perfScore": 0.55,
+            "lcpMs": 9629.363699999998,
+            "fcpMs": 1107.5865000000001,
+            "cls": 0,
+            "tbtMs": 832,
+            "speedIndexMs": 3197.24938989172,
+            "ttiMs": 9779.64285,
+            "totalByteWeight": 1817177,
+            "finalPath": "/content/1",
+            "redirected": false,
+            "lighthouseVersion": "12.8.2",
+            "fetchTime": "2026-07-28T18:30:05.202Z"
+          },
+          {
+            "run": 5,
+            "perfScore": 0.56,
+            "lcpMs": 9626.876400000001,
+            "fcpMs": 1078.1040999999998,
+            "cls": 0,
+            "tbtMs": 741.9999999999995,
+            "speedIndexMs": 3159.024622035875,
+            "ttiMs": 9777.1293,
+            "totalByteWeight": 1817177,
+            "finalPath": "/content/1",
+            "redirected": false,
+            "lighthouseVersion": "12.8.2",
+            "fetchTime": "2026-07-28T18:30:31.174Z"
+          }
+        ]
+      },
+      "images": {
+        "requestCount": 2,
+        "failedImageRequests": 0,
+        "totalTransferBytes": 1442550,
+        "byFormat": {
+          "image/jpeg": 2
+        }
+      }
+    }
+  }
+}

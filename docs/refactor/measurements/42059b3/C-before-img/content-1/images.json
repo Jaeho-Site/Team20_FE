@@ -1,0 +1,24 @@
+{
+  "requestCount": 2,
+  "failedImageRequests": 0,
+  "totalTransferBytes": 1442550,
+  "byFormat": {
+    "image/jpeg": 2
+  },
+  "images": [
+    {
+      "url": "http://localhost:3100/mock-assets/k-drama-squidgame-horizontal.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "transferBytes": 862630,
+      "bodyBytes": 862346
+    },
+    {
+      "url": "http://localhost:3100/mock-assets/squidgame-spotdetail.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "transferBytes": 579920,
+      "bodyBytes": 579636
+    }
+  ]
+}
