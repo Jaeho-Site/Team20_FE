@@ -1,5 +1,9 @@
 /**
- * npm run measure -- [--target=root|nextjs] [--label=<라벨>] [--routes=/,/location/1] [--runs=5] [--skip-build] [--notes=<특이사항>]
+ * npm run measure -- [--target=root|nextjs] [--label=<라벨>] [--routes=/,/location/1] [--runs=5] [--skip-build] [--mock] [--notes=<특이사항>]
+ *
+ * --mock (nextjs 전용): MSW 목킹 빌드로 측정한다. NEXT_PUBLIC_API_MOCKING=enabled로
+ * 빌드·서빙해 API 응답을 nextjs/src/mocks/handlers.ts의 고정 픽스처로 고정한다
+ * (이미지는 public/mock-assets/ 로컬 실파일). 라이브 백엔드 변동을 배제한 비교용.
  *
  * 재실행 가능한 측정 스크립트. 이후 모든 실험(goals.md A~D)의 before/after는 이 스크립트로만 잰다.
  * - preview 서버 기동 (root: vite preview / nextjs: next build + next start — 정적 export 금지)
@@ -69,6 +73,16 @@ const routes = (args.routes || '/').split(',').map((r) => (r.startsWith('/') ? r
 const runs = Number(args.runs || 5);
 if (!Number.isInteger(runs) || runs < 1) fail(`--runs가 1 이상의 정수가 아님: ${args.runs}`);
 const t = TARGETS[target];
+if (args.mock && target !== 'nextjs') fail('--mock은 nextjs 타깃 전용이다 (MSW 목킹 빌드).');
+const MOCK_API_PORT = 3999;
+const mockEnv = args.mock
+  ? {
+      NEXT_PUBLIC_API_MOCKING: 'enabled',
+      // 런타임은 MSW(와일드카드 매칭)가 먼저 가로챈다. 이 URL이 실제로 맞는 트래픽은
+      // 빌드 타임 정적 프리렌더의 서버 fetch(msw/node가 빌드 워커에서 안 돔)와 MSW 미적중분.
+      NEXT_PUBLIC_BACKEND_URL: `http://127.0.0.1:${MOCK_API_PORT}`,
+    }
+  : {};
 
 function fail(msg) {
   console.error(`[measure] 실패: ${msg}`);
@@ -83,6 +97,9 @@ function fail(msg) {
   }
   process.exit(1);
 }
+// killServer/killProc는 함수 선언이라 호이스팅됨 — 스텁·빌드 단계의 조기 실패에서도 자식 프로세스를 정리한다
+process.on('exit', killServer);
+process.on('SIGINT', () => process.exit(130));
 function sh(cmd, cwd = REPO) {
   return execSync(cmd, { cwd, encoding: 'utf8' }).trim();
 }
@@ -122,10 +139,38 @@ if (target === 'nextjs') {
     fail('nextjs/node_modules 없음. cd nextjs && npm install 먼저.');
 }
 
+// ---- mock API 스텁 (빌드 전 기동 — 프리렌더의 서버 fetch를 받아준다) ----
+let stubServer = null;
+if (args.mock) {
+  const stubUrl = `http://127.0.0.1:${MOCK_API_PORT}/users/status`;
+  const stubBusy = await fetch(stubUrl).then(
+    () => true,
+    () => false,
+  );
+  if (stubBusy)
+    fail(`mock-api 스텁 포트 ${MOCK_API_PORT} 이미 사용 중 — 기존 프로세스 종료 후 재실행.`);
+  console.log(`[measure] mock-api 스텁 기동 :${MOCK_API_PORT}`);
+  stubServer = spawn(`node scripts/mock-api-server.mjs ${MOCK_API_PORT} ${TARGETS.nextjs.base}`, {
+    cwd: REPO,
+    shell: true,
+    stdio: 'ignore',
+  });
+  let stubReady = false;
+  const stubUntil = Date.now() + 15_000;
+  while (!stubReady && Date.now() < stubUntil) {
+    stubReady = await fetch(stubUrl).then(
+      () => true,
+      () => false,
+    );
+    if (!stubReady) await new Promise((r) => setTimeout(r, 300));
+  }
+  if (!stubReady) fail('mock-api 스텁이 15s 내에 뜨지 않음.');
+}
+
 // ---- 빌드 ----
 if (!args['skip-build']) {
-  console.log(`[measure] build: ${t.buildCmd} (${target})`);
-  execSync(t.buildCmd, { cwd: t.cwd, stdio: 'inherit' });
+  console.log(`[measure] build: ${t.buildCmd} (${target}${args.mock ? ', mock' : ''})`);
+  execSync(t.buildCmd, { cwd: t.cwd, stdio: 'inherit', env: { ...process.env, ...mockEnv } });
 } else
   console.warn(
     '[measure] --skip-build: 기존 빌드 산출물 사용 — 다른 커밋의 dist일 수 있다 (meta.skipBuild로 기록). 정식 측정에서는 쓰지 말 것.',
@@ -141,7 +186,12 @@ const portInUse = await fetch(t.base + '/').then(
 if (portInUse)
   fail(`${t.base} 포트가 이미 사용 중 — 기존 서버를 종료하고 재실행하라 (남의 빌드 측정 방지).`);
 console.log(`[measure] serve: ${t.serveCmd}`);
-const server = spawn(t.serveCmd, { cwd: t.cwd, shell: true, stdio: 'ignore' });
+const server = spawn(t.serveCmd, {
+  cwd: t.cwd,
+  shell: true,
+  stdio: 'ignore',
+  env: { ...process.env, ...mockEnv },
+});
 let serverExited = false;
 server.on('exit', () => {
   serverExited = true;
@@ -162,18 +212,28 @@ async function waitReady(url, timeoutMs = 120_000) {
   }
   fail(`서버가 ${timeoutMs / 1000}s 내에 응답하지 않음: ${url}`);
 }
-function killServer() {
-  if (server.pid == null) return;
+function killProc(proc) {
+  if (!proc || proc.pid == null) return;
   try {
     if (process.platform === 'win32')
-      execSync(`taskkill /PID ${server.pid} /T /F`, { stdio: 'ignore' });
-    else server.kill('SIGTERM');
+      execSync(`taskkill /PID ${proc.pid} /T /F`, { stdio: 'ignore' });
+    else proc.kill('SIGTERM');
   } catch {
     /* 이미 종료 */
   }
 }
-process.on('exit', killServer);
-process.on('SIGINT', () => process.exit(130));
+function killServer() {
+  try {
+    killProc(server);
+  } catch {
+    /* server 선언 전(TDZ) 조기 종료 — 무시 */
+  }
+  try {
+    killProc(stubServer);
+  } catch {
+    /* stubServer 선언 전(TDZ) 조기 종료 — 무시 */
+  }
+}
 
 // ---- Lighthouse ----
 const chromePath = chromium.executablePath();
@@ -337,6 +397,7 @@ const meta = {
   target,
   routes,
   notes: args.notes || null,
+  mock: !!args.mock,
   skipBuild: !!args['skip-build'],
   backendEnvVar: process.env.VITE_BACKEND_URL ?? null, // null이면 vite 기본값(k-spot.kro.kr) 또는 .env
   measuredAt: startedAt,

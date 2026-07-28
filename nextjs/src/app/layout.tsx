@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "./_providers/QueryProvider";
+import { MswGate } from "./_providers/MswGate";
 import { GlobalLayout } from "@/features/Header/ui/GlobalLayout";
 import { KakaoScript } from "./_components/KakaoScript";
 import { AuthProvider } from "./_providers/AuthProvider";
@@ -35,13 +37,17 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans antialiased`}>
         <KakaoScript />
         <ErrorBoundary>
-          <QueryProvider>
-            <AuthProvider>
-              <GlobalLayout>
-                {children}
-              </GlobalLayout>
-            </AuthProvider>
-          </QueryProvider>
+          <Suspense fallback={null}>
+            <MswGate>
+              <QueryProvider>
+                <AuthProvider>
+                  <GlobalLayout>
+                    {children}
+                  </GlobalLayout>
+                </AuthProvider>
+              </QueryProvider>
+            </MswGate>
+          </Suspense>
         </ErrorBoundary>
       </body>
     </html>
