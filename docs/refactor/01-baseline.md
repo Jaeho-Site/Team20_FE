@@ -91,7 +91,21 @@
 
 미반영 없음. 반영 후 재검증: `npm test` 18/18, `npm run build` exit 0, 청크 gzip 수치 §3.3과 동일(zod 12.16 / router 21.39 / vendor 52.54 / index 46.53 / react-vendor 58.60 kB) 확인.
 
-## 7. 재현 방법
+## 7. 런타임 baseline (`npm run measure`, 커밋 `0291edf`)
+
+Phase 0 완료 후 신설한 측정 스크립트로 남긴 첫 런타임 기준선. 전체 기록: `measurements/0291edf/root-baseline/`.
+
+| 지표 (route `/`, 5회 median) | 값                        |
+| ---------------------------- | ------------------------- |
+| Lighthouse performance       | **0.71**                  |
+| LCP                          | **4,698 ms**              |
+| FCP / CLS                    | summary.json 참조 / 0.000 |
+| 이미지 요청                  | 0건                       |
+
+- **주의**: 백엔드(`k-spot.kro.kr`)가 다운 상태라 콘텐츠·이미지 API가 빈 화면의 측정이다. 프론트 셸 성능만 유효하고, 이미지 0건은 앱의 특성이 아니라 환경 제약이다 (meta.json `notes`).
+- 측정 조건 고정: Lighthouse mobile·simulate·performance-only·headless, 브라우저는 Playwright chromium 고정. **before/after는 반드시 같은 세션에서 연속 측정** (라이브 백엔드 의존).
+
+## 8. 재현 방법
 
 ```bash
 npm install

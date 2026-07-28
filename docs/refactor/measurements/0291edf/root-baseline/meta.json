@@ -1,0 +1,33 @@
+{
+  "commit": "0291edf089e3c02d4c812bb8358ff17f6839e4ef",
+  "commitShort": "0291edf",
+  "branch": "refactor/phase0-measurement-base",
+  "dirty": true,
+  "label": "root-baseline",
+  "target": "root",
+  "routes": [
+    "/"
+  ],
+  "notes": "backend k-spot.kro.kr fetch 실패(서비스 다운) — 콘텐츠·이미지 API가 빈 상태의 측정. 프론트 셸 성능만 유효. 빌드는 같은 HEAD에서 직전 실행분(0291edf)",
+  "skipBuild": true,
+  "backendEnvVar": null,
+  "measuredAt": "2026-07-28T17:52:16.191Z",
+  "finishedAt": "2026-07-28T17:54:43.257Z",
+  "node": "v22.14.0",
+  "lighthouse": {
+    "runsPerRoute": 5,
+    "formFactor": "mobile",
+    "throttlingMethod": "simulate",
+    "onlyCategories": "performance",
+    "chromeFlags": "--headless=new",
+    "version": "12.8.2"
+  },
+  "playwright": {
+    "viewport": {
+      "width": 412,
+      "height": 823
+    },
+    "deviceScaleFactor": 1.75,
+    "chromePath": "C:\\Users\\725c4\\AppData\\Local\\ms-playwright\\chromium-1194\\chrome-win\\chrome.exe"
+  }
+}
