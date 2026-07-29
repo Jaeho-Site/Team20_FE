@@ -106,63 +106,6 @@ def get_popular_contents(connection, region: str, theme: str, limit: int = 20) -
         raise pymysql.Error(f"Failed to query popular contents: {str(e)}")
 
 
-def get_content_locations(connection, content_id: int) -> List[Dict]:
-    """
-    Query filming locations for a content.
-    
-    Args:
-        connection: PyMySQL connection
-        content_id (int): Content ID
-        
-    Returns:
-        list[dict]: Location records with location_id, scene_description
-        
-    Raises:
-        pymysql.Error: If query execution fails
-    """
-    try:
-        with connection.cursor() as cursor:
-            query = """
-                SELECT location_id, scene_description
-                FROM content_location
-                WHERE content_id = %s
-            """
-            cursor.execute(query, (content_id,))
-            results = cursor.fetchall()
-            return results
-    except pymysql.Error as e:
-        raise pymysql.Error(f"Failed to query content locations: {str(e)}")
-
-
-def get_location_details(connection, location_id: int) -> Optional[Dict]:
-    """
-    Query detailed location information.
-    
-    Args:
-        connection: PyMySQL connection
-        location_id (int): Location ID
-        
-    Returns:
-        dict: Location with name, address, latitude, longitude
-        None: If location not found
-        
-    Raises:
-        pymysql.Error: If query execution fails
-    """
-    try:
-        with connection.cursor() as cursor:
-            query = """
-                SELECT location_id, name, address, latitude, longitude
-                FROM locations
-                WHERE location_id = %s
-            """
-            cursor.execute(query, (location_id,))
-            result = cursor.fetchone()
-            return result
-    except pymysql.Error as e:
-        raise pymysql.Error(f"Failed to query location details: {str(e)}")
-
-
 def get_all_locations_for_contents(connection, content_ids: List[int]) -> List[Dict]:
     """
     Query all unique location details for given content IDs in a single query.
