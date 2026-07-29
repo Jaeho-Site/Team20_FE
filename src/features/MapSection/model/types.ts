@@ -2,6 +2,9 @@ import type { RefObject } from 'react';
 
 export type LatLng = { lat: number; lng: number };
 
+// 카카오 SDK의 LatLng 인스턴스 — 좌표 접근이 프로퍼티가 아니라 메서드다
+export type KakaoLatLng = LatLng & { getLat(): number; getLng(): number };
+
 export type MapOptions = {
   center?: LatLng;
   level?: number;
@@ -18,6 +21,7 @@ export type MapContainerUiProps = {
 
 export type KakaoMap = {
   setCenter(latlng: LatLng): void;
+  getCenter(): KakaoLatLng;
   setLevel(level: number): void;
   setDraggable(flag: boolean): void;
   setZoomable(flag: boolean): void;
@@ -91,6 +95,7 @@ export type KakaoMapsNS = {
   event: {
     addListener(target: KakaoMarker | KakaoMap, event: string, handler: () => void): void;
     removeListener(target: KakaoMarker | KakaoMap, event: string, handler: () => void): void;
+    trigger(target: KakaoMarker | KakaoMap, event: string): void;
   };
 };
 

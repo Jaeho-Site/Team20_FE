@@ -28,8 +28,7 @@ export function useMapCenterAdjust({ mapRef }: UseMapCenterAdjustProps) {
     };
 
     const checkBounds = () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const center = (map as any).getCenter();
+      const center = map.getCenter();
       const lat = center.getLat();
       const lng = center.getLng();
 
