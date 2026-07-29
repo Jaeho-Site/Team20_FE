@@ -1,10 +1,10 @@
 import { useEffect, useLayoutEffect } from 'react';
 import { toast } from 'react-toastify';
 import type { RefObject } from 'react';
+import type { KakaoMap } from '../types';
 
 interface UseMapResizeProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  mapRef: RefObject<any>;
+  mapRef: RefObject<KakaoMap | null>;
   containerRef: RefObject<HTMLDivElement | null>;
   isLaptop: boolean;
 }
@@ -36,10 +36,8 @@ export function useMapResize({ mapRef, containerRef, isLaptop }: UseMapResizePro
 
     const ro = new ResizeObserver(() => {
       try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const center = (map as any).getCenter();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (window.kakao!.maps!.event as any).trigger(map, 'resize');
+        const center = map.getCenter();
+        window.kakao!.maps!.event.trigger(map, 'resize');
         map.setCenter(center);
       } catch {
         toast.error('지도 크기 조정 실패');

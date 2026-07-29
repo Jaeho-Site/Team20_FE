@@ -7,7 +7,7 @@ import {
   useUpdateLocationReview,
 } from '@/entities/location-review';
 import type { LocationReviewsProps } from '../model/types';
-import { useAuth } from '@/shared/lib/auth';
+import { useAuth } from '@/entities/auth';
 import { Button } from '@/shared/ui';
 
 const StarRating = ({ rating }: { rating: number }) => {

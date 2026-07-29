@@ -5,6 +5,7 @@ import type {
   KakaoMap,
   KakaoCustomOverlay,
   LatLng,
+  KakaoLatLng,
   KakaoMarker,
   KakaoPolyline,
   KakaoMapsNS,
@@ -169,7 +170,7 @@ export function generateOverlayHTML(
 export function createMapOverlay(
   map: KakaoMap,
   place: Place | RoutePlace,
-  position: LatLng,
+  position: LatLng | KakaoLatLng,
   onClose: () => void,
   isLaptop: boolean = true,
   onAddToRoute?: (place: Place | RoutePlace) => void,
@@ -199,11 +200,8 @@ export function getOverlayPosition(
   map: KakaoMap,
   place: Place | RoutePlace,
   isLaptop: boolean,
-): LatLng {
-  return !isLaptop
-    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (map as any).getCenter()
-    : createLatLng(place.latitude, place.longitude);
+): LatLng | KakaoLatLng {
+  return !isLaptop ? map.getCenter() : createLatLng(place.latitude, place.longitude);
 }
 
 declare global {
@@ -211,23 +209,18 @@ declare global {
 }
 
 if (typeof globalThis !== 'undefined') {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (globalThis as any).globalOverlayRef = null;
+  globalThis.globalOverlayRef = null;
 }
 
 export function closeGlobalOverlay(): void {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  if ((globalThis as any).globalOverlayRef) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (globalThis as any).globalOverlayRef.setMap(null);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (globalThis as any).globalOverlayRef = null;
+  if (globalThis.globalOverlayRef) {
+    globalThis.globalOverlayRef.setMap(null);
+    globalThis.globalOverlayRef = null;
   }
 }
 
 export function setGlobalOverlay(overlay: KakaoCustomOverlay): void {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (globalThis as any).globalOverlayRef = overlay;
+  globalThis.globalOverlayRef = overlay;
 }
 
 export function createAndShowOverlay(

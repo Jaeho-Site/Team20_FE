@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import type { User, LoginRequest, SignupRequest } from '@/entities/auth';
+import type { User, LoginRequest, SignupRequest } from './types';
 
 export interface AuthContextType {
   user: User | null;

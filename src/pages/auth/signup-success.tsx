@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { z } from 'zod';
-import { requireGuest } from '@/shared/lib/auth';
+import { requireGuest } from '@/entities/auth';
 import { resendVerificationEmailApi } from '@/entities/auth';
 import { EmailSentSuccess } from '@/shared/ui';
 

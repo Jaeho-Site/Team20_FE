@@ -15,8 +15,7 @@ export function useMediaQuery(query: string): boolean {
     if (typeof mql.addEventListener === 'function') {
       mql.addEventListener('change', onChange);
     } else {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (mql as any).addListener(onChange);
+      mql.addListener(onChange);
     }
 
     setMatches(mql.matches);
@@ -25,8 +24,7 @@ export function useMediaQuery(query: string): boolean {
       if (typeof mql.removeEventListener === 'function') {
         mql.removeEventListener('change', onChange);
       } else {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (mql as any).removeListener(onChange);
+        mql.removeListener(onChange);
       }
     };
   }, [query]);

@@ -11,16 +11,7 @@ export function SaveRouteModal({
   onSuccess,
   isUpdating = false,
 }: SaveRouteModalProps) {
-  const {
-    title,
-    description,
-    isLoading,
-    error,
-    handleSubmit,
-    handleClose,
-    handleTitleChange,
-    handleDescriptionChange,
-  } = useSaveRouteForm({
+  const { form, isLoading, error, handleSubmit, handleClose, clearError } = useSaveRouteForm({
     onSave: (title, description) => onSave?.(title, description, places),
     onClose,
     onSuccess,
@@ -53,16 +44,24 @@ export function SaveRouteModal({
               >
                 {SAVE_ROUTE_MODAL.FORM_LABELS.TITLE}
               </label>
-              <input
-                id="title"
-                type="text"
-                value={title}
-                onChange={handleTitleChange}
-                placeholder={SAVE_ROUTE_MODAL.PLACEHOLDERS.TITLE}
-                disabled={isLoading}
-                className="w-full px-(--spacing-3) py-(--spacing-2) border border-(--color-border-primary) rounded-lg bg-(--color-background-primary) text-body text-(--color-text-primary) placeholder:text-(--color-text-tertiary) focus:outline-none focus:ring-2 focus:ring-(--color-border-focus) focus:border-transparent disabled:opacity-50"
-                maxLength={SAVE_ROUTE_MODAL.LIMITS.TITLE_MAX_LENGTH}
-              />
+              <form.Field name="title">
+                {(field) => (
+                  <input
+                    id="title"
+                    type="text"
+                    value={field.state.value}
+                    onChange={(e) => {
+                      field.handleChange(e.target.value);
+                      clearError();
+                    }}
+                    onBlur={field.handleBlur}
+                    placeholder={SAVE_ROUTE_MODAL.PLACEHOLDERS.TITLE}
+                    disabled={isLoading}
+                    className="w-full px-(--spacing-3) py-(--spacing-2) border border-(--color-border-primary) rounded-lg bg-(--color-background-primary) text-body text-(--color-text-primary) placeholder:text-(--color-text-tertiary) focus:outline-none focus:ring-2 focus:ring-(--color-border-focus) focus:border-transparent disabled:opacity-50"
+                    maxLength={SAVE_ROUTE_MODAL.LIMITS.TITLE_MAX_LENGTH}
+                  />
+                )}
+              </form.Field>
             </div>
 
             <div>
@@ -72,16 +71,21 @@ export function SaveRouteModal({
               >
                 {SAVE_ROUTE_MODAL.FORM_LABELS.DESCRIPTION}
               </label>
-              <textarea
-                id="description"
-                value={description}
-                onChange={handleDescriptionChange}
-                placeholder={SAVE_ROUTE_MODAL.PLACEHOLDERS.DESCRIPTION}
-                disabled={isLoading}
-                rows={3}
-                className="w-full px-(--spacing-3) py-(--spacing-2) border border-(--color-border-primary) rounded-lg bg-(--color-background-primary) text-body text-(--color-text-primary) placeholder:text-(--color-text-tertiary) focus:outline-none focus:ring-2 focus:ring-(--color-border-focus) focus:border-transparent disabled:opacity-50 resize-none"
-                maxLength={SAVE_ROUTE_MODAL.LIMITS.DESCRIPTION_MAX_LENGTH}
-              />
+              <form.Field name="description">
+                {(field) => (
+                  <textarea
+                    id="description"
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    onBlur={field.handleBlur}
+                    placeholder={SAVE_ROUTE_MODAL.PLACEHOLDERS.DESCRIPTION}
+                    disabled={isLoading}
+                    rows={3}
+                    className="w-full px-(--spacing-3) py-(--spacing-2) border border-(--color-border-primary) rounded-lg bg-(--color-background-primary) text-body text-(--color-text-primary) placeholder:text-(--color-text-tertiary) focus:outline-none focus:ring-2 focus:ring-(--color-border-focus) focus:border-transparent disabled:opacity-50 resize-none"
+                    maxLength={SAVE_ROUTE_MODAL.LIMITS.DESCRIPTION_MAX_LENGTH}
+                  />
+                )}
+              </form.Field>
             </div>
 
             <div className="text-caption text-(--color-text-secondary)">
@@ -108,23 +112,30 @@ export function SaveRouteModal({
             >
               {SAVE_ROUTE_MODAL.BUTTONS.CANCEL}
             </button>
-            <button
-              type="submit"
-              disabled={isLoading || !title.trim()}
-              className={`flex-1 px-(--spacing-4) py-(--spacing-3) text-button text-(--color-text-inverse) rounded-lg transition-all duration-200 ${
-                isLoading || !title.trim()
-                  ? 'bg-(--color-brand-primary) opacity-50 cursor-not-allowed'
-                  : 'bg-(--color-brand-secondary) hover:bg-(--color-brand-tertiary)'
-              }`}
-            >
-              {isLoading
-                ? isUpdating
-                  ? SAVE_ROUTE_MODAL.BUTTONS.UPDATING
-                  : SAVE_ROUTE_MODAL.BUTTONS.SAVING
-                : isUpdating
-                  ? SAVE_ROUTE_MODAL.BUTTONS.UPDATE
-                  : SAVE_ROUTE_MODAL.BUTTONS.SAVE}
-            </button>
+            <form.Subscribe selector={(state) => state.values.title}>
+              {(title) => {
+                const disabled = isLoading || !title.trim();
+                return (
+                  <button
+                    type="submit"
+                    disabled={disabled}
+                    className={`flex-1 px-(--spacing-4) py-(--spacing-3) text-button text-(--color-text-inverse) rounded-lg transition-all duration-200 ${
+                      disabled
+                        ? 'bg-(--color-brand-primary) opacity-50 cursor-not-allowed'
+                        : 'bg-(--color-brand-secondary) hover:bg-(--color-brand-tertiary)'
+                    }`}
+                  >
+                    {isLoading
+                      ? isUpdating
+                        ? SAVE_ROUTE_MODAL.BUTTONS.UPDATING
+                        : SAVE_ROUTE_MODAL.BUTTONS.SAVING
+                      : isUpdating
+                        ? SAVE_ROUTE_MODAL.BUTTONS.UPDATE
+                        : SAVE_ROUTE_MODAL.BUTTONS.SAVE}
+                  </button>
+                );
+              }}
+            </form.Subscribe>
           </div>
         </form>
       </div>
