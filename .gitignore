@@ -65,6 +65,10 @@ reference/
 # 개인 문서 (이력서 등 — docs/local/README.md 참조)
 docs/local/
 
+# Python 산출물
+__pycache__/
+*.pyc
+
 # Claude Code (개인 오버라이드/작업 산출물만 제외 — 팀 공유 설정은 커밋한다)
 .claude/settings.local.json
 .claude/worktrees/

@@ -66,6 +66,10 @@ export const useEmailVerificationQuery = (token: string, enabled: boolean = true
     queryFn: () => verifyEmailApi(token),
     enabled: enabled && !!token,
     retry: false,
+    // 토큰 검증은 1회성 — refetch되면 이미 소비된 토큰으로 재호출돼 성공 화면이 에러로 뒤집힐 수 있다
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 };
 
