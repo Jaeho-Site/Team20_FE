@@ -1,27 +1,31 @@
-import { useForm } from '@tanstack/react-form';
-import { passwordResetDefaults, passwordResetSchema } from '../model/passwordResetSchemas';
+import { useForm } from 'react-hook-form';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
+import {
+  type PasswordResetFormData,
+  passwordResetDefaults,
+  passwordResetSchema,
+} from '../model/passwordResetSchemas';
 import { usePasswordResetMutation } from './usePasswordResetMutations';
 
 export const usePasswordResetForm = (token: string) => {
   const resetMutation = usePasswordResetMutation();
 
-  const form = useForm({
+  const form = useForm<PasswordResetFormData>({
+    resolver: standardSchemaResolver(passwordResetSchema),
     defaultValues: { ...passwordResetDefaults },
-    validators: {
-      onChange: passwordResetSchema,
-      onBlur: passwordResetSchema,
-    },
-    onSubmit: ({ value }) => {
-      resetMutation.mutate({
-        rawToken: token,
-        password: value.password,
-      });
-    },
+    mode: 'all',
+  });
+
+  const handleSubmit = form.handleSubmit((value) => {
+    resetMutation.mutate({
+      rawToken: token,
+      password: value.password,
+    });
   });
 
   return {
     form,
-    handleSubmit: form.handleSubmit,
+    handleSubmit,
     resetMutation,
   };
 };

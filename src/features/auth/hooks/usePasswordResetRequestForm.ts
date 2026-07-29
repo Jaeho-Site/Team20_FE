@@ -1,5 +1,7 @@
-import { useForm } from '@tanstack/react-form';
+import { useForm } from 'react-hook-form';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import {
+  type PasswordResetRequestFormData,
   passwordResetRequestDefaults,
   passwordResetRequestSchema,
 } from '../model/passwordResetSchemas';
@@ -8,22 +10,21 @@ import { usePasswordResetRequestMutation } from './usePasswordResetMutations';
 export const usePasswordResetRequestForm = () => {
   const resetRequestMutation = usePasswordResetRequestMutation();
 
-  const form = useForm({
+  const form = useForm<PasswordResetRequestFormData>({
+    resolver: standardSchemaResolver(passwordResetRequestSchema),
     defaultValues: { ...passwordResetRequestDefaults },
-    validators: {
-      onChange: passwordResetRequestSchema,
-      onBlur: passwordResetRequestSchema,
-    },
-    onSubmit: ({ value }) => {
-      resetRequestMutation.mutate({
-        email: value.email,
-      });
-    },
+    mode: 'all',
+  });
+
+  const handleSubmit = form.handleSubmit((value) => {
+    resetRequestMutation.mutate({
+      email: value.email,
+    });
   });
 
   return {
     form,
-    handleSubmit: form.handleSubmit,
+    handleSubmit,
     resetRequestMutation,
   };
 };

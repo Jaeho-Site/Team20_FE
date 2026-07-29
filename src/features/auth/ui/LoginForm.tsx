@@ -1,7 +1,7 @@
 import { useLoginForm } from '../hooks/useLoginForm';
-import { FormTitle, FormButton, FormNavigation } from '@/shared/ui';
+import { FormTitle, FormNavigation } from '@/shared/ui';
 import { useRenderProbe } from '@/shared/lib/renderProbe';
-import { FormFieldRenderer } from './FormFieldRenderer';
+import { RhfFieldRenderer, RhfSubmitButton } from './RhfFormControls';
 import { LOGIN_FIELDS, AUTH_MESSAGES } from '../model';
 
 export const LoginForm = () => {
@@ -30,43 +30,23 @@ export const LoginForm = () => {
         )}
 
         {LOGIN_FIELDS.map((fieldConfig) => (
-          <form.Field key={fieldConfig.name} name={fieldConfig.name}>
-            {(field) => (
-              <FormFieldRenderer
-                field={field}
-                label={fieldConfig.label}
-                type={fieldConfig.type}
-                placeholder={fieldConfig.placeholder}
-              />
-            )}
-          </form.Field>
+          <RhfFieldRenderer
+            key={fieldConfig.name}
+            control={form.control}
+            name={fieldConfig.name}
+            label={fieldConfig.label}
+            type={fieldConfig.type}
+            placeholder={fieldConfig.placeholder}
+          />
         ))}
 
-        <form.Subscribe selector={(state) => [state.isValid, state.isSubmitting, state.values]}>
-          {([isValid, isSubmitting, values]) => {
-            const hasValues =
-              values &&
-              typeof values === 'object' &&
-              'email' in values &&
-              'password' in values &&
-              values.email &&
-              values.password;
-
-            const isLoading = isSubmitting || loginMutation.isPending;
-            const canSubmit = hasValues && isValid && !isLoading;
-
-            return (
-              <FormButton
-                type="submit"
-                variant={canSubmit ? 'primary' : 'disabled'}
-                isLoading={isLoading as boolean}
-                disabled={!canSubmit as boolean}
-              >
-                {AUTH_MESSAGES.LOGIN_BUTTON}
-              </FormButton>
-            );
-          }}
-        </form.Subscribe>
+        <RhfSubmitButton
+          control={form.control}
+          isPending={loginMutation.isPending}
+          hasValues={(v) => Boolean(v.email && v.password)}
+        >
+          {AUTH_MESSAGES.LOGIN_BUTTON}
+        </RhfSubmitButton>
 
         <FormNavigation
           leftLink={{ to: '/auth/forgot-password', text: AUTH_MESSAGES.FORGOT_PASSWORD_LINK }}

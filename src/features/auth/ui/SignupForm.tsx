@@ -1,6 +1,6 @@
 import { useSignupForm } from '../hooks/useSignupForm';
-import { FormTitle, FormButton, FormNavigation } from '@/shared/ui';
-import { FormFieldRenderer } from './FormFieldRenderer';
+import { FormTitle, FormNavigation } from '@/shared/ui';
+import { RhfFieldRenderer, RhfSubmitButton } from './RhfFormControls';
 import { SIGNUP_FIELDS, AUTH_MESSAGES } from '../model';
 
 export const SignupForm = () => {
@@ -28,47 +28,23 @@ export const SignupForm = () => {
         )}
 
         {SIGNUP_FIELDS.map((fieldConfig) => (
-          <form.Field key={fieldConfig.name} name={fieldConfig.name}>
-            {(field) => (
-              <FormFieldRenderer
-                field={field}
-                label={fieldConfig.label}
-                type={fieldConfig.type}
-                placeholder={fieldConfig.placeholder}
-              />
-            )}
-          </form.Field>
+          <RhfFieldRenderer
+            key={fieldConfig.name}
+            control={form.control}
+            name={fieldConfig.name}
+            label={fieldConfig.label}
+            type={fieldConfig.type}
+            placeholder={fieldConfig.placeholder}
+          />
         ))}
 
-        <form.Subscribe selector={(state) => [state.isValid, state.isSubmitting, state.values]}>
-          {([isValid, isSubmitting, values]) => {
-            const hasValues =
-              values &&
-              typeof values === 'object' &&
-              'email' in values &&
-              'password' in values &&
-              'confirmPassword' in values &&
-              'nickname' in values &&
-              values.email &&
-              values.password &&
-              values.confirmPassword &&
-              values.nickname;
-
-            const isLoading = isSubmitting || signupMutation.isPending;
-            const canSubmit = hasValues && isValid && !isLoading;
-
-            return (
-              <FormButton
-                type="submit"
-                variant={canSubmit ? 'primary' : 'disabled'}
-                isLoading={isLoading as boolean}
-                disabled={!canSubmit as boolean}
-              >
-                {AUTH_MESSAGES.SIGNUP_BUTTON}
-              </FormButton>
-            );
-          }}
-        </form.Subscribe>
+        <RhfSubmitButton
+          control={form.control}
+          isPending={signupMutation.isPending}
+          hasValues={(v) => Boolean(v.email && v.password && v.confirmPassword && v.nickname)}
+        >
+          {AUTH_MESSAGES.SIGNUP_BUTTON}
+        </RhfSubmitButton>
 
         <FormNavigation
           rightText={AUTH_MESSAGES.HAVE_ACCOUNT_TEXT}

@@ -1,6 +1,6 @@
 import { usePasswordResetRequestForm } from '../hooks/usePasswordResetRequestForm';
-import { FormTitle, FormButton, FormNavigation } from '@/shared/ui';
-import { FormFieldRenderer } from './FormFieldRenderer';
+import { FormTitle, FormNavigation } from '@/shared/ui';
+import { RhfFieldRenderer, RhfSubmitButton } from './RhfFormControls';
 import { AUTH_MESSAGES } from '../model';
 
 export const PasswordResetRequestForm = () => {
@@ -35,37 +35,21 @@ export const PasswordResetRequestForm = () => {
           </div>
         )}
 
-        <form.Field name="email">
-          {(field) => (
-            <FormFieldRenderer
-              field={field}
-              label={AUTH_MESSAGES.FIELD_LABEL_EMAIL}
-              type="email"
-              placeholder={AUTH_MESSAGES.FIELD_PLACEHOLDER_EMAIL}
-            />
-          )}
-        </form.Field>
+        <RhfFieldRenderer
+          control={form.control}
+          name="email"
+          label={AUTH_MESSAGES.FIELD_LABEL_EMAIL}
+          type="email"
+          placeholder={AUTH_MESSAGES.FIELD_PLACEHOLDER_EMAIL}
+        />
 
-        <form.Subscribe selector={(state) => [state.isValid, state.isSubmitting, state.values]}>
-          {([isValid, isSubmitting, values]) => {
-            const hasValues =
-              values && typeof values === 'object' && 'email' in values && values.email;
-
-            const isLoading = isSubmitting || resetRequestMutation.isPending;
-            const canSubmit = hasValues && isValid && !isLoading;
-
-            return (
-              <FormButton
-                type="submit"
-                variant={canSubmit ? 'primary' : 'disabled'}
-                isLoading={isLoading as boolean}
-                disabled={!canSubmit as boolean}
-              >
-                {AUTH_MESSAGES.PASSWORD_RESET_REQUEST_BUTTON}
-              </FormButton>
-            );
-          }}
-        </form.Subscribe>
+        <RhfSubmitButton
+          control={form.control}
+          isPending={resetRequestMutation.isPending}
+          hasValues={(v) => Boolean(v.email)}
+        >
+          {AUTH_MESSAGES.PASSWORD_RESET_REQUEST_BUTTON}
+        </RhfSubmitButton>
 
         <FormNavigation
           rightText={AUTH_MESSAGES.HAVE_ACCOUNT_TEXT}
