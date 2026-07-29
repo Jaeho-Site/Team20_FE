@@ -61,6 +61,10 @@ export default defineConfig(({ mode }) => {
             if (nid.includes('node_modules/zod/')) return 'zod';
             if (nid.includes('node_modules/react-hook-form/') || nid.includes('@hookform/'))
               return 'react-hook-form';
+            // '@tanstack/react-router'는 위에서 이미 매칭됨 — 이 패턴은 순수 react-router만 잡는다.
+            // 별도 청크로 찢으면 모듈 최상위 createContext가 react 초기화 전에 실행되는
+            // 청크 순서 문제가 나서(실측), react-vendor에 합치고 기여분은 delta로 측정한다.
+            if (nid.includes('node_modules/react-router')) return 'react-vendor';
             if (
               nid.includes('node_modules/react/') ||
               nid.includes('node_modules/react-dom/') ||
