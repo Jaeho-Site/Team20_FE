@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import type { IconButtonProps } from '../../model/types';
-import { cn } from '../../model/utils';
+import { cn } from '../../lib/cn';
 import { sizeClass, pxClass, circleWH, variantClass, iconSizeByControl } from '../../model/styles';
 
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(

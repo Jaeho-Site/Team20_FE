@@ -10,7 +10,6 @@
 
 @import './app/styles/utilities/_typography.css';
 @import './app/styles/utilities/_safearea.css';
-@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 

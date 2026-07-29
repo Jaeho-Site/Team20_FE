@@ -1,11 +1,11 @@
-import { usePopularContents } from '../../model/hooks/usePopularContents';
+import { usePopularContentsSuggest } from '../../model/hooks/usePopularContentsSuggest';
 import type { PopularContentsSuggestProps } from '../../model/types';
 
 export function PopularContentsSuggest({
   onPlacesChange,
   onSearchStateChange,
 }: PopularContentsSuggestProps) {
-  const { popularContents, isLoading, handleContentClick } = usePopularContents({
+  const { popularContents, isLoading, handleContentClick } = usePopularContentsSuggest({
     onPlacesChange,
     onSearchStateChange,
   });

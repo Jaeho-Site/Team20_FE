@@ -8,6 +8,9 @@ import {
   deleteItinerary,
 } from './itineraryApi';
 import { itineraryKeys } from './queryKeys';
+// FSD 참고: entities 간 교차 import — 일정 변경이 마이페이지(user 도메인) 캐시를
+// invalidate해야 하는 도메인 간 결합. 인라인 리터럴보다 낫다고 판단해 허용 (P4-1 정리 때 재검토)
+import { mypageKeys } from '@/entities/user';
 import type { CreateItineraryRequest } from '../model/types';
 import { SAVE_ROUTE_MODAL } from '@/features/RoutePlanning/model/messages';
 
@@ -36,7 +39,7 @@ export const useCreateItinerary = () => {
     mutationFn: (data: CreateItineraryRequest) => createItinerary(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: itineraryKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: ['mypage'] });
+      queryClient.invalidateQueries({ queryKey: mypageKeys.all });
     },
     onError: () => {
       toast.error(SAVE_ROUTE_MODAL.VALIDATION.SAVE_FAILED);
@@ -54,7 +57,7 @@ export const useUpdateItinerary = () => {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: itineraryKeys.lists() });
       queryClient.invalidateQueries({ queryKey: itineraryKeys.detail(variables.itineraryId) });
-      queryClient.invalidateQueries({ queryKey: ['mypage'] });
+      queryClient.invalidateQueries({ queryKey: mypageKeys.all });
     },
     onError: () => {
       toast.error(SAVE_ROUTE_MODAL.VALIDATION.UPDATE_FAILED);
@@ -70,7 +73,7 @@ export const useDeleteItinerary = () => {
     mutationFn: (itineraryId: string) => deleteItinerary(itineraryId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: itineraryKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: ['mypage'] });
+      queryClient.invalidateQueries({ queryKey: mypageKeys.all });
       toast.success(SAVE_ROUTE_MODAL.SUCCESS.DELETE_MESSAGE);
     },
     onError: () => {

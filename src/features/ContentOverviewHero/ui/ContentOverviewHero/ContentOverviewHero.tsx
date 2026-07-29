@@ -5,6 +5,7 @@ import { ContentOverviewActionButtons } from '../ContentOverviewActionButton/Con
 import type { ContentOverviewHeroProps } from '../../model/types';
 import { useContentDetail } from '@/entities/content/api/queryfn';
 import { getContentLocations } from '@/entities/content/api/contentApi';
+import { contentQueryKeys } from '@/entities/content/api/queryKeys';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 
@@ -15,7 +16,7 @@ export function ContentOverviewHero({
   const { data } = useContentDetail(contentId);
 
   const { data: contentLocations = [] } = useSuspenseQuery({
-    queryKey: ['content-locations', contentId],
+    queryKey: contentQueryKeys.locations(contentId),
     queryFn: () => getContentLocations(contentId),
   });
 
