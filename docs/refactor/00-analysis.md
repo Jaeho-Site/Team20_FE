@@ -82,6 +82,8 @@
 우선순위 기준: ① 정확성 위험 → ② 변경을 막고 있는 것 → ③ 목표(TanStack/zod) 직결 → ④ 정리.
 `실험` 열은 해당 항목이 goals.md의 어느 실험의 **사전 작업**인지를 뜻한다. `—`는 실험과 무관한 독립 부채다.
 
+> **[상태 갱신 2026-07-29]** Phase 0 전체(P0-1~P0-4) **완료** — 결과·수치는 [`01-baseline.md`](./01-baseline.md).
+
 ### [P0-1] `npm run ci`가 실패 상태 — 회귀 판정 수단이 없다 · 실험 A B C D
 
 - 근거: lint exit 1, 31 errors (`.claude/hooks/*.mjs`, `.claude/statusline.mjs`)
@@ -135,6 +137,8 @@
 
 ### [P2-1] TanStack Form에 zod를 연결하는 공식 경로를 한 곳도 쓰지 않는다 · 실험 A B
 
+> **[정정·해소 2026-07-29 → [`04-A`](./04-A-zod-tanstack-form.md)]** 구조 진단(이중 배선)은 정확했으나, **"필드별 메시지가 뭉개진다"는 함의는 UI 계측으로 반증됨** — field-level 이중 배선이 보상해 UI는 6/6 정상 표시하고 있었다. 이중 배선 자체는 실험 A로 해소(9곳→0).
+
 이 저장소의 핵심 관심사에 정면으로 걸리는 항목이다.
 
 - 근거: `src/features/auth/hooks/useLoginForm.ts:15-24` (form-level `validators.onChange`가 `loginSchema.parse(value)`를 try/catch로 감싸고 **항상 `'입력값을 확인해주세요'` 하나만** 반환), `src/features/auth/hooks/useFormValidation.ts:41-49` (field-level에서 `loginSchema.shape.email`을 **또 한 번** 별도 parse), `src/features/auth/ui/LoginForm.tsx:15-16`
@@ -146,6 +150,8 @@
 - 예상 규모: M
 
 ### [P2-2] 스키마와 defaultValues에 필드를 이중 선언하고 `as`로 잇는다 · 실험 A
+
+> **[해소 2026-07-29 → [`04-A`](./04-A-zod-tanstack-form.md)]** 단언 4곳·any 5곳 → 0. defaults는 스키마 파일에 콜로케이트.
 
 - 근거: `src/features/auth/hooks/useLoginForm.ts:11-14` (`defaultValues: { email: '', password: '' } as LoginFormData`), `src/features/auth/model/schemas.ts:3-9` (같은 필드를 zod로 재선언), 동일 패턴이 `useSignupForm.ts:11-16`, `usePasswordResetForm.ts:11-14`, `usePasswordResetRequestForm.ts:14-16`
 - 영향: zod 스키마가 단일 출처(single source of truth)가 아니다. 필드를 추가하면 두 곳을 고쳐야 하고, 타입 단언이 그 불일치를 가려준다.
@@ -196,6 +202,8 @@
 
 ### [P3-2] 실험 C는 지금 바로 시작할 수 있다 (준비 완료) · 실험 C
 
+> **[완료·정정 2026-07-29 → [`03-C`](./03-C-next-image.md)]** 실험 C 완료(next/image 채택, 이미지 bytes 최대 −88.7%). **정정**: "`<img>` 3곳"은 불완전한 목록이었다 — 캐롤셀에 `next/image + unoptimized` 2곳이 더 있었고(03-C §6-B), 잔여 unoptimized 3곳(PosterCard·PlaceThumbnail·ContentCard)은 미전환 후속 후보로 남아 있다.
+
 - 근거: `nextjs/next.config.ts` (`images.remotePatterns` 5개 호스트 이미 설정), `<img>` 잔존 3곳 — `LocationHero.tsx`, `LocationRelatedContents.tsx`, `ContentOverviewHeroClient.tsx` (**전부 `// eslint-disable-next-line @next/next/no-img-element` 주석으로 우회 중**), `next/image` 사용 8곳
 - 영향: 부채가 아니라 **기회**다. 인프라가 이미 전환 대상 3곳을 명시적으로 표시해 두었고, 이미지가 전부 백엔드 동적 외부 URL이라 remotePatterns가 실제로 필요한 조건도 충족한다.
 - 측정 지표: `<img>` 3곳 → `next/image` 3곳, LCP / 이미지 전송 bytes / CLS / webp·avif 협상 여부
@@ -241,6 +249,8 @@
 - 예상 규모: M
 
 ### [P4-5] 미사용/중복 의존성 · 실험 B (주의)
+
+> **[부분 종결 2026-07-29 → [`05-B`](./05-B-tanstack-form-vs-rhf.md)]** `react-hook-form`은 실험 B 결론(TanStack 유지)에 따라 **제거 완료** — 제거 후 번들 diff 0B로 미사용 실측 확정. `lucide`·`tailwindcss-animate`·`tw-animate-css` 중복은 미처리.
 
 - 근거: `package.json:38` (`react-hook-form ^7.62.0`), `package.json:34-35` (`lucide` + `lucide-react`), `src/index.css:3,13` (`tw-animate-css`가 **같은 파일에 2번 import**)
 - 영향: **`react-hook-form`은 지금 제거하면 안 된다.** 실험 B가 이 라이브러리를 실제로 구현해 비교하는 실험이다. 제거 판단은 실험 B의 결론에 종속된다. 나머지는 독립적으로 정리 가능.
@@ -327,6 +337,10 @@ Phase 0을 먼저 하는 이유: 0-3이 없으면 실험 B·D의 주 지표를 �
 | 4    | **D** — TanStack Router vs React Router  | 0-3, 2-1, 2-2    | 범위 축소 필수(goals.md: 전면 마이그레이션 금지). 대표 라우트 서브셋 + 번들 기여분 + params 타입 안전성 3축                                                       |
 
 각 실험은 `/ab-compare` 절차를 따르고 `TEMPLATE.md` 형식으로 `docs/refactor/03-C-next-image.md` 식으로 기록한다.
+
+> **[진행 상태 2026-07-29]** C 완료([03-C](./03-C-next-image.md)) · A 완료([04-A](./04-A-zod-tanstack-form.md)) · B 완료([05-B](./05-B-tanstack-form-vs-rhf.md), RHF 불채택·의존성 제거) · **D 미착수**.
+>
+> **실험 D 착수 규칙 (순서 함정 방지)**: 2-1(`useParams`/`useSearch` 수동 단언 정리)을 **D의 before 측정보다 먼저 완료**하고, **2-1 자체의 before/after 수치도 기록**한다 — 단언 45% 상태로 재면 "TanStack Router는 타입 이점 없다"는 거짓 결론이 나오고, 단언 정리 결과가 곧 D의 A안 "수동 단언 수" 지표 측정이기 때문이다. 2-2(가드 중앙화)도 동일하게 D 이전 완료.
 
 ### Phase 4 — 독립 트랙 (실험 무관, 언제든)
 
