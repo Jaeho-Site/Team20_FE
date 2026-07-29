@@ -1,0 +1,84 @@
+{
+  "routes": {
+    "/location/1": {
+      "lighthouse": {
+        "medians": {
+          "perfScore": 0.41,
+          "lcpMs": 6587.831599999998,
+          "fcpMs": 2292.7043999999996,
+          "cls": 0,
+          "tbtMs": 1750,
+          "speedIndexMs": 6841.3701470806245,
+          "ttiMs": 7423.224679999998,
+          "totalByteWeight": 644156
+        },
+        "medianRunForHtml": 1,
+        "runs": [
+          {
+            "run": 1,
+            "perfScore": 0.41,
+            "lcpMs": 6587.831599999998,
+            "fcpMs": 2292.7043999999996,
+            "cls": 0,
+            "tbtMs": 1750,
+            "speedIndexMs": 6841.3701470806245,
+            "ttiMs": 7423.224679999998,
+            "totalByteWeight": 644156,
+            "finalPath": "/location/1",
+            "redirected": false,
+            "lighthouseVersion": "12.8.2",
+            "fetchTime": "2026-07-29T05:52:06.071Z"
+          }
+        ]
+      },
+      "images": {
+        "requestCount": 4,
+        "failedImageRequests": 0,
+        "totalTransferBytes": 231767,
+        "byFormat": {
+          "image/avif": 4
+        }
+      }
+    },
+    "/content/1": {
+      "lighthouse": {
+        "medians": {
+          "perfScore": 0.52,
+          "lcpMs": 5370.786624999999,
+          "fcpMs": 1743.5564499999998,
+          "cls": 0,
+          "tbtMs": 1347.270824999999,
+          "speedIndexMs": 4393.212039262145,
+          "ttiMs": 5399.8805624999995,
+          "totalByteWeight": 507802
+        },
+        "medianRunForHtml": 1,
+        "runs": [
+          {
+            "run": 1,
+            "perfScore": 0.52,
+            "lcpMs": 5370.786624999999,
+            "fcpMs": 1743.5564499999998,
+            "cls": 0,
+            "tbtMs": 1347.270824999999,
+            "speedIndexMs": 4393.212039262145,
+            "ttiMs": 5399.8805624999995,
+            "totalByteWeight": 507802,
+            "finalPath": "/content/1",
+            "redirected": false,
+            "lighthouseVersion": "12.8.2",
+            "fetchTime": "2026-07-29T05:52:51.246Z"
+          }
+        ]
+      },
+      "images": {
+        "requestCount": 3,
+        "failedImageRequests": 0,
+        "totalTransferBytes": 132777,
+        "byFormat": {
+          "image/avif": 3
+        }
+      }
+    }
+  }
+}

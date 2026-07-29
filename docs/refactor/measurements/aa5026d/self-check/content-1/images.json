@@ -1,0 +1,31 @@
+{
+  "requestCount": 3,
+  "failedImageRequests": 0,
+  "totalTransferBytes": 132777,
+  "byFormat": {
+    "image/avif": 3
+  },
+  "images": [
+    {
+      "url": "http://localhost:3100/_next/image?url=%2Fmock-assets%2Fsquidgame-spotdetail.jpg&w=750&q=75",
+      "status": 200,
+      "contentType": "image/avif",
+      "transferBytes": 80356,
+      "bodyBytes": 79923
+    },
+    {
+      "url": "http://localhost:3100/_next/image?url=%2Fmock-assets%2Fk-drama-squidgame-horizontal.jpg&w=750&q=75",
+      "status": 200,
+      "contentType": "image/avif",
+      "transferBytes": 52421,
+      "bodyBytes": 51980
+    },
+    {
+      "url": "http://localhost:3100/_next/image?url=%2Fmock-assets%2Fsquidgame-spotdetail.jpg&w=384&q=75",
+      "status": 200,
+      "contentType": "image/avif",
+      "transferBytes": null,
+      "bodyBytes": null
+    }
+  ]
+}
