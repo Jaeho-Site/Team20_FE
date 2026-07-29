@@ -1,27 +1,17 @@
-import { createFileRoute, redirect } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
+import { z } from 'zod';
+import { requireGuest } from '@/shared/lib/auth';
 import { resendVerificationEmailApi } from '@/entities/auth';
 import { EmailSentSuccess } from '@/shared/ui';
 
-type SignupSuccessSearch = {
-  email: string;
-};
-
 export const Route = createFileRoute('/auth/signup-success')({
   component: SignupSuccessPage,
-  beforeLoad: async ({ context }) => {
-    if (context.auth.isLoggedIn) {
-      throw redirect({ to: '/mypage' });
-    }
-  },
-  validateSearch: (search: Record<string, unknown>): SignupSuccessSearch => {
-    return {
-      email: (search.email as string) || '',
-    };
-  },
+  beforeLoad: requireGuest,
+  validateSearch: z.object({ email: z.string().catch('') }),
 });
 
 function SignupSuccessPage() {
-  const { email } = Route.useSearch() as SignupSuccessSearch;
+  const { email } = Route.useSearch();
 
   const handleResendEmail = async (email: string) => {
     await resendVerificationEmailApi({ email });

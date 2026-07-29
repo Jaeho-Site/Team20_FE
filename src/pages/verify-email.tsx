@@ -1,22 +1,16 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useEffect } from 'react';
-
-type VerifyEmailSearch = {
-  token: string;
-};
+import { z } from 'zod';
+import { searchString } from '@/shared/lib/searchParams';
 
 export const Route = createFileRoute('/verify-email')({
   component: RedirectToVerifiedEmail,
-  validateSearch: (search: Record<string, unknown>): VerifyEmailSearch => {
-    return {
-      token: (search.token as string) || '',
-    };
-  },
+  validateSearch: z.object({ token: searchString.catch('') }),
 });
 
 function RedirectToVerifiedEmail() {
   const navigate = useNavigate();
-  const { token } = Route.useSearch() as VerifyEmailSearch;
+  const { token } = Route.useSearch();
 
   useEffect(() => {
     navigate({
