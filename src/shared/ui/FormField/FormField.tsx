@@ -1,4 +1,5 @@
 import { Input, type InputProps } from '../Input/Input';
+import { useRenderProbe } from '../../lib/renderProbe';
 
 // TanStack Form 필드 API의 구조적 부분집합 — 폼별 23개 제네릭을 끌고 오지 않기 위해
 // 래퍼가 실제로 쓰는 형태만 선언한다 (any·단언 없이 구조적 타이핑으로 수용).
@@ -22,6 +23,7 @@ export interface FormFieldWrapperProps {
 }
 
 export const FormFieldWrapper = ({ field, inputProps = {} }: FormFieldWrapperProps) => {
+  useRenderProbe(`field:${field.name}`);
   const firstError = field.state.meta.errors.find((e) => e != null);
   const error = typeof firstError === 'string' ? firstError : firstError?.message;
   const isBlurred = field.state.meta.isBlurred;

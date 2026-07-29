@@ -59,6 +59,8 @@ export default defineConfig(({ mode }) => {
             if (nid.includes('@tanstack/react-store') || nid.includes('@tanstack/store'))
               return 'tanstack-store';
             if (nid.includes('node_modules/zod/')) return 'zod';
+            if (nid.includes('node_modules/react-hook-form/') || nid.includes('@hookform/'))
+              return 'react-hook-form';
             if (
               nid.includes('node_modules/react/') ||
               nid.includes('node_modules/react-dom/') ||

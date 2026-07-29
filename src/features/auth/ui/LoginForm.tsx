@@ -1,9 +1,11 @@
 import { useLoginForm } from '../hooks/useLoginForm';
 import { FormTitle, FormButton, FormNavigation } from '@/shared/ui';
+import { useRenderProbe } from '@/shared/lib/renderProbe';
 import { FormFieldRenderer } from './FormFieldRenderer';
 import { LOGIN_FIELDS, AUTH_MESSAGES } from '../model';
 
 export const LoginForm = () => {
+  useRenderProbe('LoginForm');
   const { form, handleSubmit, loginMutation } = useLoginForm();
 
   const onSubmit = async (e: React.FormEvent) => {
