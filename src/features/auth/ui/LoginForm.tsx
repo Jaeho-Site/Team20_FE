@@ -1,20 +1,15 @@
 import { useLoginForm } from '../hooks/useLoginForm';
 import { FormTitle, FormButton, FormNavigation } from '@/shared/ui';
 import { FormFieldRenderer } from './FormFieldRenderer';
-import { createLoginFields, AUTH_MESSAGES } from '../model';
+import { LOGIN_FIELDS, AUTH_MESSAGES } from '../model';
 
 export const LoginForm = () => {
-  const { form, handleSubmit, validation, loginMutation } = useLoginForm();
+  const { form, handleSubmit, loginMutation } = useLoginForm();
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await handleSubmit();
   };
-
-  const fields = createLoginFields(
-    validation.createEmailValidator,
-    validation.createPasswordValidator,
-  );
 
   return (
     <div className="w-full max-w-2xl mx-auto">
@@ -32,17 +27,11 @@ export const LoginForm = () => {
           </div>
         )}
 
-        {fields.map((fieldConfig) => (
-          <form.Field
-            key={fieldConfig.name}
-            name={fieldConfig.name}
-            validators={fieldConfig.validator}
-          >
+        {LOGIN_FIELDS.map((fieldConfig) => (
+          <form.Field key={fieldConfig.name} name={fieldConfig.name}>
             {(field) => (
               <FormFieldRenderer
                 field={field}
-                touchedFields={validation.touchedFields}
-                getErrorMessage={validation.getErrorMessage}
                 label={fieldConfig.label}
                 type={fieldConfig.type}
                 placeholder={fieldConfig.placeholder}

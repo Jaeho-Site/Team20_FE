@@ -1,22 +1,15 @@
 import { useSignupForm } from '../hooks/useSignupForm';
 import { FormTitle, FormButton, FormNavigation } from '@/shared/ui';
 import { FormFieldRenderer } from './FormFieldRenderer';
-import { createSignupFields, AUTH_MESSAGES } from '../model';
+import { SIGNUP_FIELDS, AUTH_MESSAGES } from '../model';
 
 export const SignupForm = () => {
-  const { form, handleSubmit, validation, signupMutation } = useSignupForm();
+  const { form, handleSubmit, signupMutation } = useSignupForm();
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await handleSubmit();
   };
-
-  const fields = createSignupFields(
-    validation.createEmailValidator,
-    validation.createPasswordValidator,
-    validation.createConfirmPasswordValidator,
-    validation.createNicknameValidator,
-  );
 
   return (
     <div className="w-full max-w-2xl mx-auto">
@@ -34,17 +27,11 @@ export const SignupForm = () => {
           </div>
         )}
 
-        {fields.map((fieldConfig) => (
-          <form.Field
-            key={fieldConfig.name}
-            name={fieldConfig.name}
-            validators={fieldConfig.validator}
-          >
+        {SIGNUP_FIELDS.map((fieldConfig) => (
+          <form.Field key={fieldConfig.name} name={fieldConfig.name}>
             {(field) => (
               <FormFieldRenderer
                 field={field}
-                touchedFields={validation.touchedFields}
-                getErrorMessage={validation.getErrorMessage}
                 label={fieldConfig.label}
                 type={fieldConfig.type}
                 placeholder={fieldConfig.placeholder}

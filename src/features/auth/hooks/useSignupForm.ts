@@ -1,28 +1,15 @@
 import { useForm } from '@tanstack/react-form';
-import { type SignupFormData, signupSchema } from '../model';
-import { useFormValidation } from './useFormValidation';
+import { signupDefaults, signupSchema } from '../model';
 import { useSignupMutation } from './useAuthMutations';
 
 export const useSignupForm = () => {
-  const validation = useFormValidation();
   const signupMutation = useSignupMutation();
 
   const form = useForm({
-    defaultValues: {
-      email: '',
-      password: '',
-      confirmPassword: '',
-      nickname: '',
-    } as SignupFormData,
+    defaultValues: { ...signupDefaults },
     validators: {
-      onChange: ({ value }) => {
-        try {
-          signupSchema.parse(value);
-          return undefined;
-        } catch {
-          return '입력값을 확인해주세요';
-        }
-      },
+      onChange: signupSchema,
+      onBlur: signupSchema,
     },
     onSubmit: ({ value }) => {
       signupMutation.mutate({
@@ -36,7 +23,6 @@ export const useSignupForm = () => {
   return {
     form,
     handleSubmit: form.handleSubmit,
-    validation,
     signupMutation,
   };
 };

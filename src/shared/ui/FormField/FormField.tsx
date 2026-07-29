@@ -1,24 +1,8 @@
-import { type ReactNode } from 'react';
 import { Input, type InputProps } from '../Input/Input';
 
-export interface FormFieldProps
-  extends Omit<InputProps, 'error' | 'touched' | 'showError' | 'children'> {
-  name: string;
-  children: (field: {
-    name: string;
-    value: string;
-    onChange: (value: string) => void;
-    onBlur: () => void;
-    isValid: boolean;
-    errors: string[];
-    isTouched: boolean;
-  }) => ReactNode;
-}
-
-export const FormField = () => {
-  return null;
-};
-
+// TanStack Form 필드 API의 구조적 부분집합 — 폼별 23개 제네릭을 끌고 오지 않기 위해
+// 래퍼가 실제로 쓰는 형태만 선언한다 (any·단언 없이 구조적 타이핑으로 수용).
+// errors는 Standard Schema(zod) 바인딩 시 이슈 객체({ message })가 온다.
 export interface FormFieldWrapperProps {
   field: {
     name: string;
@@ -26,27 +10,21 @@ export interface FormFieldWrapperProps {
       value: string;
       meta: {
         isValid: boolean;
-        errors: (string | undefined)[];
+        errors: Array<string | { message?: string } | undefined>;
         isTouched: boolean;
+        isBlurred: boolean;
       };
     };
     handleChange: (value: string) => void;
     handleBlur: () => void;
   };
-  touchedFields: Set<string>;
-  getErrorMessage: (error: string | undefined) => string;
   inputProps?: Partial<InputProps>;
 }
 
-export const FormFieldWrapper = ({
-  field,
-  touchedFields,
-  getErrorMessage,
-  inputProps = {},
-}: FormFieldWrapperProps) => {
-  const isTouched = touchedFields.has(field.name);
-  const error =
-    field.state.meta.errors.length > 0 ? getErrorMessage(field.state.meta.errors[0]) : undefined;
+export const FormFieldWrapper = ({ field, inputProps = {} }: FormFieldWrapperProps) => {
+  const firstError = field.state.meta.errors.find((e) => e != null);
+  const error = typeof firstError === 'string' ? firstError : firstError?.message;
+  const isBlurred = field.state.meta.isBlurred;
 
   return (
     <Input
@@ -56,8 +34,8 @@ export const FormFieldWrapper = ({
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => field.handleChange(e.target.value)}
       onBlur={field.handleBlur}
       error={error}
-      touched={isTouched}
-      showError={!field.state.meta.isValid && isTouched && field.state.meta.errors.length > 0}
+      touched={isBlurred}
+      showError={isBlurred && error != null}
       {...inputProps}
     />
   );

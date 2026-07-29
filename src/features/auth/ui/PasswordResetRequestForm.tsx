@@ -4,7 +4,7 @@ import { FormFieldRenderer } from './FormFieldRenderer';
 import { AUTH_MESSAGES } from '../model';
 
 export const PasswordResetRequestForm = () => {
-  const { form, handleSubmit, validation, resetRequestMutation } = usePasswordResetRequestForm();
+  const { form, handleSubmit, resetRequestMutation } = usePasswordResetRequestForm();
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,12 +35,10 @@ export const PasswordResetRequestForm = () => {
           </div>
         )}
 
-        <form.Field name="email" validators={validation.createEmailValidator()}>
+        <form.Field name="email">
           {(field) => (
             <FormFieldRenderer
               field={field}
-              touchedFields={validation.touchedFields}
-              getErrorMessage={validation.getErrorMessage}
               label={AUTH_MESSAGES.FIELD_LABEL_EMAIL}
               type="email"
               placeholder={AUTH_MESSAGES.FIELD_PLACEHOLDER_EMAIL}

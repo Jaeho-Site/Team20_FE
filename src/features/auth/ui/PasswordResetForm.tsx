@@ -1,24 +1,19 @@
 import { usePasswordResetForm } from '../hooks/usePasswordResetForm';
 import { FormTitle, FormButton, FormNavigation } from '@/shared/ui';
 import { FormFieldRenderer } from './FormFieldRenderer';
-import { createPasswordResetFields, AUTH_MESSAGES } from '../model';
+import { PASSWORD_RESET_FIELDS, AUTH_MESSAGES } from '../model';
 
 interface PasswordResetFormProps {
   token: string;
 }
 
 export const PasswordResetForm = ({ token }: PasswordResetFormProps) => {
-  const { form, handleSubmit, validation, resetMutation } = usePasswordResetForm(token);
+  const { form, handleSubmit, resetMutation } = usePasswordResetForm(token);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await handleSubmit();
   };
-
-  const fields = createPasswordResetFields(
-    validation.createPasswordValidator,
-    validation.createConfirmPasswordValidator,
-  );
 
   // 성공 시 성공 메시지만 표시
   if (resetMutation.isSuccess) {
@@ -61,17 +56,11 @@ export const PasswordResetForm = ({ token }: PasswordResetFormProps) => {
           </div>
         )}
 
-        {fields.map((fieldConfig) => (
-          <form.Field
-            key={fieldConfig.name}
-            name={fieldConfig.name}
-            validators={fieldConfig.validator}
-          >
+        {PASSWORD_RESET_FIELDS.map((fieldConfig) => (
+          <form.Field key={fieldConfig.name} name={fieldConfig.name}>
             {(field) => (
               <FormFieldRenderer
                 field={field}
-                touchedFields={validation.touchedFields}
-                getErrorMessage={validation.getErrorMessage}
                 label={fieldConfig.label}
                 type={fieldConfig.type}
                 placeholder={fieldConfig.placeholder}

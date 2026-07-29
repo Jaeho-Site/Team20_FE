@@ -29,3 +29,13 @@ export const signupSchema = z
 
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type SignupFormData = z.infer<typeof signupSchema>;
+
+// 폼 초기값 — 스키마와 같은 파일에 두고 타입을 스키마 추론 타입으로 검사한다.
+// 필드가 추가되면 스키마와 여기 둘 다 컴파일 에러로 잡힌다 (단언 없는 단일 출처).
+export const loginDefaults: LoginFormData = { email: '', password: '' };
+export const signupDefaults: SignupFormData = {
+  email: '',
+  password: '',
+  confirmPassword: '',
+  nickname: '',
+};
