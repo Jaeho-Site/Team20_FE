@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRelatedContentDetails } from '@/entities/content/api/queryfn';
 import type { RelatedContent } from '@/entities/location';
@@ -62,11 +63,12 @@ function RelatedContentCard({
       <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group-hover:-translate-y-2 border border-gray-100">
         <div className="aspect-[4/3] relative overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
           {image ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={image?.trim()}
+            <Image
+              src={image.trim()}
               alt={title}
-              className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover object-center transition-transform duration-500 group-hover:scale-110"
             />
           ) : (
             <div className="flex items-center justify-center w-full h-full text-gray-400 text-sm">

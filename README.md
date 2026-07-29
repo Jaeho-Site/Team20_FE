@@ -11,7 +11,7 @@
 
 #### 1-1. Next.js 버전 (Kubernetes 배포)
 
-![K8s Architecture](./public/k8s.png)
+![K8s Architecture](./docs/images/k8s.png)
 
 **GCP Kubernetes Engine 기반 컨테이너 배포**
 
@@ -26,7 +26,7 @@
 
 #### 1-2. Vite 버전 (main, dev 운영 중)
 
-![FE Architecture](./public/1-CI-CD.png)
+![FE Architecture](./docs/images/1-CI-CD.png)
 
 **S3 + CloudFront 정적 호스팅 구조**
 
@@ -38,7 +38,7 @@
 
 ### 2. 🌐 서버리스 API 아키텍처 (Vite 버전 전용)
 
-![FE Architecture](./public/FE-api2.png)
+![FE Architecture](./docs/images/FE-api2.png)
 
 **CloudFront + API Gateway + Lambda 완전 서버리스 구조**
 
@@ -49,7 +49,7 @@
 
 ### 2-1. 🎯 서비스 플로우
 
-![Service Flow](./public/service.png)
+![Service Flow](./docs/images/service.png)
 
 **K-Contents 데이터 수집 및 가공 프로세스**
 
@@ -63,7 +63,7 @@
 
 ### 4. 📐 Feature-Sliced Design (FSD) 아키텍처
 
-![FSD Architecture](./public/2-FSD.png)
+![FSD Architecture](./docs/images/2-FSD.png)
 
 **5-레이어 구조로 확장성과 유지보수성 극대화**
 
@@ -92,7 +92,7 @@ shared/  → 공통 유틸리티 및 UI 컴포넌트
 
 **서비스 테마 시스템 구축**
 
-![Service Theme](./public/3-ServiceTheme.png)
+![Service Theme](./docs/images/3-ServiceTheme.png)
 
 - **통합 테마 시스템** 정의 및 적용
 - 기존 컴포넌트들에 **일관된 디자인 토큰** 적용
@@ -127,7 +127,7 @@ src/
 
 **Storybook UI 테스팅 환경 구축**
 
-![Storybook Testing](./public/4-storybook.png)
+![Storybook Testing](./docs/images/4-storybook.png)
 
 - **LocationImageCarousel** 등 주요 컴포넌트 스토리 작성 완료
 - **컴포넌트 문서화** 자동화로 개발팀 협업 효율성 향상
@@ -138,7 +138,7 @@ src/
 
 ### 7. 🤖 AI 동선 추천 시스템
 
-![AI 동선](./public/ai동선.png)
+![AI 동선](./docs/images/ai동선.png)
 
 **서버리스 AI 추천 시스템 아키텍처**
 

@@ -1,26 +1,17 @@
 import { useForm } from '@tanstack/react-form';
-import { type LoginFormData, loginSchema } from '../model';
-import { useFormValidation } from './useFormValidation';
+import { loginDefaults, loginSchema } from '../model';
 import { useLoginMutation } from './useAuthMutations';
 
 export const useLoginForm = () => {
-  const validation = useFormValidation();
   const loginMutation = useLoginMutation();
 
   const form = useForm({
-    defaultValues: {
-      email: '',
-      password: '',
-    } as LoginFormData,
+    defaultValues: { ...loginDefaults },
+    // zod 스키마 직접 바인딩 (Standard Schema) — 이슈가 필드별로 자동 매핑된다.
+    // onBlur: 입력 없이 focus→blur한 필드에도 필수 입력 에러를 띄우기 위해 필요 (리뷰 지적)
     validators: {
-      onChange: ({ value }) => {
-        try {
-          loginSchema.parse(value);
-          return undefined;
-        } catch {
-          return '입력값을 확인해주세요';
-        }
-      },
+      onChange: loginSchema,
+      onBlur: loginSchema,
     },
     onSubmit: ({ value }) => {
       loginMutation.mutate({
@@ -33,7 +24,6 @@ export const useLoginForm = () => {
   return {
     form,
     handleSubmit: form.handleSubmit,
-    validation,
     loginMutation,
   };
 };

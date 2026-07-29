@@ -20,3 +20,6 @@ export const passwordResetSchema = z
 
 export type PasswordResetRequestFormData = z.infer<typeof passwordResetRequestSchema>;
 export type PasswordResetFormData = z.infer<typeof passwordResetSchema>;
+
+export const passwordResetRequestDefaults: PasswordResetRequestFormData = { email: '' };
+export const passwordResetDefaults: PasswordResetFormData = { password: '', confirmPassword: '' };

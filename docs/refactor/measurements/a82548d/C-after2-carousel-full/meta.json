@@ -1,0 +1,35 @@
+{
+  "commit": "a82548d7c767176bd7315c57bcb1e9adef08c982",
+  "commitShort": "a82548d",
+  "branch": "refactor/phase0-measurement-base",
+  "dirty": true,
+  "label": "C-after2-carousel-full",
+  "target": "nextjs",
+  "routes": [
+    "/location/1",
+    "/content/1"
+  ],
+  "notes": "실험 C 확장 완결: 캐롤셀 unoptimized 2곳(갤러리+썸네일) 제거. 같은 MSW 픽스처",
+  "mock": true,
+  "skipBuild": false,
+  "backendEnvVar": null,
+  "measuredAt": "2026-07-29T04:21:47.189Z",
+  "finishedAt": "2026-07-29T04:26:35.139Z",
+  "node": "v22.14.0",
+  "lighthouse": {
+    "runsPerRoute": 5,
+    "formFactor": "mobile",
+    "throttlingMethod": "simulate",
+    "onlyCategories": "performance",
+    "chromeFlags": "--headless=new",
+    "version": "12.8.2"
+  },
+  "playwright": {
+    "viewport": {
+      "width": 412,
+      "height": 823
+    },
+    "deviceScaleFactor": 1.75,
+    "chromePath": "C:\\Users\\725c4\\AppData\\Local\\ms-playwright\\chromium-1194\\chrome-win\\chrome.exe"
+  }
+}

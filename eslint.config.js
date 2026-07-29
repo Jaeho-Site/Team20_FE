@@ -10,7 +10,15 @@ import prettierConfig from 'eslint-config-prettier';
 
 export default tseslint.config(
   {
-    ignores: ['dist', 'storybook-static', '**/*.gen.ts', 'routeTree.gen.ts', 'nextjs/**','functions/**'],
+    ignores: [
+      'dist',
+      'storybook-static',
+      '**/*.gen.ts',
+      'routeTree.gen.ts',
+      'nextjs/**',
+      'functions/**',
+      '.claude/**',
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -27,6 +35,12 @@ export default tseslint.config(
     rules: {
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+    },
+  },
+  {
+    files: ['scripts/**/*.mjs'],
+    languageOptions: {
+      globals: globals.node,
     },
   },
   {
