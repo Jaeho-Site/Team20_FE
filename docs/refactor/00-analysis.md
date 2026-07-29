@@ -338,7 +338,7 @@ Phase 0을 먼저 하는 이유: 0-3이 없으면 실험 B·D의 주 지표를 �
 
 각 실험은 `/ab-compare` 절차를 따르고 `TEMPLATE.md` 형식으로 `docs/refactor/03-C-next-image.md` 식으로 기록한다.
 
-> **[진행 상태 2026-07-29]** C 완료([03-C](./03-C-next-image.md)) · A 완료([04-A](./04-A-zod-tanstack-form.md)) · B 완료([05-B](./05-B-tanstack-form-vs-rhf.md), RHF 불채택·의존성 제거) · **D 미착수**.
+> **[진행 상태 2026-07-29]** C 완료([03-C](./03-C-next-image.md)) · A 완료([04-A](./04-A-zod-tanstack-form.md)) · B 완료([05-B](./05-B-tanstack-form-vs-rhf.md), RHF 불채택·의존성 제거) · **D 완료**([06-D](./06-D-tanstack-router-vs-react-router.md), RR 불채택 — +9.4KB·하위 레이어 22파일 결합 실측). **실험 A~D 전부 종료.**
 >
 > **실험 D 착수 규칙 (순서 함정 방지)**: 2-1(`useParams`/`useSearch` 수동 단언 정리)을 **D의 before 측정보다 먼저 완료**하고, **2-1 자체의 before/after 수치도 기록**한다 — 단언 45% 상태로 재면 "TanStack Router는 타입 이점 없다"는 거짓 결론이 나오고, 단언 정리 결과가 곧 D의 A안 "수동 단언 수" 지표 측정이기 때문이다. 2-2(가드 중앙화)도 동일하게 D 이전 완료.
 

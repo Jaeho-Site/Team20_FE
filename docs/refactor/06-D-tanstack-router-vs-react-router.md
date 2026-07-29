@@ -1,6 +1,6 @@
 # [06] 실험 D — TanStack Router vs React Router (대표 라우트 서브셋)
 
-> 작성일: 2026-07-29 · 대상: 루트 Vite · A안 커밋: (사전 작업 커밋 후 기입) / B안: 미착수
+> 작성일: 2026-07-29 · 대상: 루트 Vite · A안 커밋: `ceee891` (사전 작업 완료) / B안: 브랜치 `experiment/D-react-router`
 
 ## 0. 사전 작업 — 2-1·2-2 (착수 규칙에 따라 D의 before 측정 이전 완료)
 
@@ -52,28 +52,60 @@ TanStack Router 선택의 핵심 근거(라우트 파라미터 타입 추론·�
 
 ## 4. 결과
 
-(측정 후 기입)
+### 4.1 범위 확정 과정에서의 핵심 실측 (설계를 바꾼 발견)
+
+**하위 레이어 22개 파일이 `@tanstack/react-router`를 직접 import한다** (`grep -rln`, features 19 + shared 3 — Header의 Link, auth 훅들의 useNavigate, FormNavigation 등). 실화면 바디를 RR 서브셋에서 재사용하면 이 22개를 전부 고쳐야 렌더가 성립 = 전면 마이그레이션(goals.md 금지). → B안은 **배선 계층(가드·검색 검증·params)만 실구현 + 스텁 바디**로 확정. **라우터 전환 비용의 실체는 라우트 파일 19개가 아니라 하위 레이어 22개 파일이다.**
+
+### 4.2 지표별 결과
+
+| 지표                                  | A안 TanStack Router                                                              | B안 React Router 7.18                                                                                                 | 차이                             | 신뢰도 |
+| ------------------------------------- | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | -------------------------------- | ------ |
+| 라이브러리 기여분 gzip                | **21.39 KB** (+공유 store 1.46)                                                  | **31.0 KB** (react-vendor delta 31.03 / 별도 청크 30.80 — 두 방법 교차 일치)                                          | **RR +9.4 KB (+44%)**            | 높음   |
+| 라우트 배선 코드 (대표 3라우트, 근사) | 약 54줄 (라우트 블록 + 공유 가드·스키마 지분) + `routeTree.gen.ts` 442줄(생성물) | 약 73줄 (스텁 제외 배선 순수분) — `useValidatedSearch`·`RequireAuth` **재발명 포함**                                  | RR 약 +35% (근사 — 산출 방식 §9) | 중간   |
+| 타입 안전성                           | 단언 0, params/search **전부 추론**, 경로 문자열 오타는 컴파일 에러              | `as` 0 (런타임 내로잉 1회로 회피)이나 **params가 `string \| undefined`**, search 스키마 배선 수동, 경로 문자열 무검증 | A안 우위 (구조적)                | 높음   |
+| 동작 스팟체크                         | 6/6 (사전 작업 §0)                                                               | **5/5** (가드·리다이렉트 체인·숫자형 토큰·params)                                                                     | 동등                             | 높음   |
+
+### 4.3 부수 실측 2건
+
+- **숫자형 토큰 비대칭**: RR은 URLSearchParams 기반이라 `?token=123456`이 항상 문자열 — §0-B의 JSON 파싱 함정이 **구조적으로 없다**. TanStack의 JSON 파싱은 타입 있는 검색 파라미터의 대가다 (`searchString`으로 관리 가능하나 알아야 하는 함정).
+- **청크 분리 함정**: react-router를 별도 청크로 찢으면 모듈 최상위 `createContext`가 react 초기화 전에 실행돼 앱이 죽는다(실측, `Cannot read properties of undefined (reading 'createContext')`). react-vendor 합류 + delta 측정으로 우회 — 두 측정 방법의 수치가 30.8/31.0KB로 일치해 신뢰도를 교차 확보했다.
 
 ## 5. 해석
 
-(측정 후 기입)
+- **판정: B안 불채택 → TanStack Router 유지 확정.** 사전 기준(RR gzip 5KB 이상 절감 필수)과 정반대로 RR이 **+9.4KB 더 무겁다**. "React Router가 표준이고 가볍다"는 통념이 이 조건에서 역전 — 실험 B(RHF)와 같은 패턴의 결과다.
+- 타입 안전성 축은 사전 작업(2-1)이 전제였음이 재확인됐다: 단언 45% 상태였다면 A안의 "전부 추론" 우위가 수치에 나타나지 않았을 것이다.
+- 전환 비용의 실체(하위 레이어 22파일)는 goals.md가 전면 마이그레이션을 금지한 판단을 실측으로 정당화한다.
 
 ## 6. 정성 평가 (수치 아님)
 
-(측정 후 기입)
+- RR에는 validateSearch·라우트 컨텍스트 가드·전역 라우트 타입(Register)이 없다 — 같은 의미론을 얻으려면 `useValidatedSearch`, `RequireAuth`를 손수 만들어야 했고, 이는 앱마다 재발명되는 비공식 관례다.
+- TanStack의 파일 기반 라우팅 + 생성물(routeTree 442줄)은 "공짜 타입"의 비용 — 빌드 파이프라인 의존이 생긴다. RR은 생성물이 없다.
+- 스텁이라 데이터 로딩(loader) 축은 비교하지 못했다 — 측정하지 않음으로 기록.
 
 ## 7. 결론과 다음 행동
 
-(측정 후 기입)
+- **채택: A안 (TanStack Router 유지).** 근거: 번들 −9.4KB, 타입 안전성 구조 우위, 전환 비용 22파일. B안 구현은 `experiment/D-react-router` 브랜치에 보존.
+- 이로써 **goals.md 실험 A~D 전부 완료.** 남은 트랙: Phase 2 잔여(2-4~2-7), Phase 4 독립 트랙(functions 분해 등).
 
 ## 8. 이력서 문장 (goals.md 이력서 지표)
 
-(측정 후 기입)
+- TanStack Router vs React Router를 배선 서브셋으로 실측 비교 — RR이 오히려 +9.4KB(+44%) 무겁고 params 추론·검색 검증을 재발명해야 함을 확인, 라우터 선택을 수치로 확정
+- 라우터 전환 비용의 실체가 라우트 파일이 아니라 하위 레이어 22개 파일의 결합임을 실측 — "부분 마이그레이션 실험" 설계로 전면 전환 없이 의사결정 근거 확보
 
 ## 9. 재현 방법
 
 ```bash
-npm install && npm run ci                     # 사전 작업 검증
-npm run build                                 # tanstack-router 청크 gzip은 빌드 출력에서
-# 가드·리다이렉트 스팟체크: docs/refactor/06 문서의 §0 케이스 5개 (스크립트는 실험 브랜치에 포함 예정)
+# A안 (refactor/phase2-router-prep)
+npm install && npm run ci                     # 사전 작업 검증 (18/18, build)
+npm run build                                 # tanstack-router 청크 21.39KB gzip은 빌드 출력에서
+
+# B안
+git switch experiment/D-react-router && npm install
+npm run build                                 # react-vendor 89.79KB — A안 서브셋의 58.76KB와의 delta가 RR 기여분
+# 별도 청크 실측(30.80KB)은 vite.config의 react-router 규칙을 'react-router-lib' 반환으로 바꾸면 재현
+# (단, 그 상태로는 청크 초기화 순서 문제로 앱이 안 뜬다 — §4.3)
+
+# 배선 코드량 산출 방식: B안 = RrAppRouter.tsx 95줄 + RrApp.tsx 17줄 중 스텁 표시부 제외 약 73줄.
+# A안 = 대표 3라우트의 createFileRoute 블록 + verify-email 리다이렉트 컴포넌트 + requireAuth·searchString 공유 지분 약 54줄.
+# 결합 실측: grep -rln "@tanstack/react-router" src/features src/shared src/entities  → 22파일
 ```
