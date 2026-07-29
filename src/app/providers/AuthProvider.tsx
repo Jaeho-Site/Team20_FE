@@ -6,7 +6,7 @@ import {
   useSignupMutation,
   useLogoutMutation,
 } from '@/entities/auth';
-import { AuthContext, type AuthContextType } from '@/shared/lib/auth';
+import { AuthContext, type AuthContextType } from '@/entities/auth';
 
 interface AuthProviderProps {
   children: ReactNode;

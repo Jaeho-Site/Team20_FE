@@ -25,3 +25,8 @@ export type {
   EmailResendRequest,
   EmailResendResponse,
 } from './model/types';
+
+// Auth Context (세션 상태)
+export { AuthContext, type AuthContextType } from './model/AuthContext';
+export { useAuth } from './model/useAuth';
+export { requireAuth, requireGuest } from './model/routeGuards';

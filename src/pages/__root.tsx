@@ -1,7 +1,7 @@
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router';
 import { GlobalLayout } from '@/app/layout/GlobalLayout';
 import { NotFoundPage } from './not-found';
-import type { AuthContextType } from '@/shared/lib/auth/AuthContext';
+import type { AuthContextType } from '@/entities/auth';
 
 interface RouterContext {
   auth: AuthContextType;

@@ -1,3 +1,4 @@
+import { ITINERARY_MESSAGES } from '@/entities/itinerary';
 export const ROUTE_BUTTON_TEXT = {
   ADD_TO_ROUTE: '동선에 추가하기',
   ADDED_TO_ROUTE: '동선에 추가됨',
@@ -56,9 +57,9 @@ export const SAVE_ROUTE_MODAL = {
   VALIDATION: {
     TITLE_REQUIRED: '제목을 입력해주세요.',
     NO_PLACES: '저장할 장소가 없습니다.',
-    SAVE_FAILED: '동선 저장에 실패했습니다. 다시 시도해주세요.',
-    UPDATE_FAILED: '동선 수정에 실패했습니다. 다시 시도해주세요.',
-    DELETE_FAILED: '동선 삭제에 실패했습니다. 다시 시도해주세요.',
+    SAVE_FAILED: ITINERARY_MESSAGES.SAVE_FAILED,
+    UPDATE_FAILED: ITINERARY_MESSAGES.UPDATE_FAILED,
+    DELETE_FAILED: ITINERARY_MESSAGES.DELETE_FAILED,
   },
   LIMITS: {
     TITLE_MAX_LENGTH: 50,
@@ -70,6 +71,6 @@ export const SAVE_ROUTE_MODAL = {
     GO_MYPAGE: '마이페이지 바로 가기',
     UPDATE_TITLE: '동선 수정 완료',
     UPDATE_MESSAGE: '성공적으로 동선을 수정하였습니다.',
-    DELETE_MESSAGE: '동선이 삭제되었습니다.',
+    DELETE_MESSAGE: ITINERARY_MESSAGES.DELETE_SUCCESS,
   },
 } as const;

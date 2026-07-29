@@ -15,7 +15,7 @@ import { DRAG_STYLES } from '../../model/constants';
 import { useSaveRouteModal } from '../../model/hooks/useSaveRouteModal';
 import { useDragScrollLock } from '../../model/hooks/useDragScrollLock';
 import { useBreakpoints } from '@/shared/hooks/useMediaQuery';
-import { useAuth } from '@/shared/lib/auth';
+import { useAuth } from '@/entities/auth';
 import { useState, useCallback } from 'react';
 import { LoginRequiredModal } from '@/features/auth/ui/LoginRequiredModal';
 import { useNavigate } from '@tanstack/react-router';

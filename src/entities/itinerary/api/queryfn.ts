@@ -12,7 +12,7 @@ import { itineraryKeys } from './queryKeys';
 // invalidate해야 하는 도메인 간 결합. 인라인 리터럴보다 낫다고 판단해 허용 (P4-1 정리 때 재검토)
 import { mypageKeys } from '@/entities/user';
 import type { CreateItineraryRequest } from '../model/types';
-import { SAVE_ROUTE_MODAL } from '@/features/RoutePlanning/model/messages';
+import { ITINERARY_MESSAGES } from '../model/messages';
 
 // 여행 계획 목록 조회
 export const useItineraries = () => {
@@ -42,7 +42,7 @@ export const useCreateItinerary = () => {
       queryClient.invalidateQueries({ queryKey: mypageKeys.all });
     },
     onError: () => {
-      toast.error(SAVE_ROUTE_MODAL.VALIDATION.SAVE_FAILED);
+      toast.error(ITINERARY_MESSAGES.SAVE_FAILED);
     },
   });
 };
@@ -60,7 +60,7 @@ export const useUpdateItinerary = () => {
       queryClient.invalidateQueries({ queryKey: mypageKeys.all });
     },
     onError: () => {
-      toast.error(SAVE_ROUTE_MODAL.VALIDATION.UPDATE_FAILED);
+      toast.error(ITINERARY_MESSAGES.UPDATE_FAILED);
     },
   });
 };
@@ -74,10 +74,10 @@ export const useDeleteItinerary = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: itineraryKeys.lists() });
       queryClient.invalidateQueries({ queryKey: mypageKeys.all });
-      toast.success(SAVE_ROUTE_MODAL.SUCCESS.DELETE_MESSAGE);
+      toast.success(ITINERARY_MESSAGES.DELETE_SUCCESS);
     },
     onError: () => {
-      toast.error(SAVE_ROUTE_MODAL.VALIDATION.DELETE_FAILED);
+      toast.error(ITINERARY_MESSAGES.DELETE_FAILED);
     },
   });
 };

@@ -1,5 +1,5 @@
 import { useNavigate } from '@tanstack/react-router';
-import { useAuth } from '@/shared/lib/auth';
+import { useAuth } from '@/entities/auth';
 import type { UserProfileProps } from '../model/types';
 
 export const UserProfile = ({ email, nickname }: UserProfileProps) => {

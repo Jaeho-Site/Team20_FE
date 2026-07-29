@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { requireAuth } from '@/shared/lib/auth';
+import { requireAuth } from '@/entities/auth';
 import { MyPage } from '../features/UserInfo';
 import { messages } from '../features/UserInfo/model/messages';
 
