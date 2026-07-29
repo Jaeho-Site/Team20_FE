@@ -1,9 +1,9 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { getMyPage } from '@/entities/user';
+import { getMyPage, mypageKeys } from '@/entities/user';
 
 export const useMyPageData = () => {
   const query = useSuspenseQuery({
-    queryKey: ['mypage'],
+    queryKey: mypageKeys.all,
     queryFn: getMyPage,
   });
 

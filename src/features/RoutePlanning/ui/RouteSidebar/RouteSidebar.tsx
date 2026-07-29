@@ -10,6 +10,7 @@ import {
   formatRouteCount,
   formatLocations,
 } from '../../model/messages';
+import { mypageKeys } from '@/entities/user';
 import { DRAG_STYLES } from '../../model/constants';
 import { useSaveRouteModal } from '../../model/hooks/useSaveRouteModal';
 import { useDragScrollLock } from '../../model/hooks/useDragScrollLock';
@@ -68,7 +69,7 @@ export function RouteSidebar({
   const handleSuccessConfirm = useCallback(async () => {
     await Promise.all([
       queryClient.invalidateQueries({ queryKey: itineraryKeys.lists() }),
-      queryClient.invalidateQueries({ queryKey: ['mypage'] }),
+      queryClient.invalidateQueries({ queryKey: mypageKeys.all }),
     ]);
     setIsSuccessModalOpen(false);
     navigate({ to: '/mypage' });
