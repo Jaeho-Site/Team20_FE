@@ -1,18 +1,13 @@
-import { createFileRoute, redirect } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
+import { z } from 'zod';
+import { searchString } from '@/shared/lib/searchParams';
+import { requireGuest } from '@/shared/lib/auth';
 import { PasswordResetForm } from '@/features/auth';
 
 export const Route = createFileRoute('/auth/reset-password')({
   component: ResetPasswordPage,
-  beforeLoad: async ({ context }) => {
-    if (context.auth.isLoggedIn) {
-      throw redirect({ to: '/mypage' });
-    }
-  },
-  validateSearch: (search: Record<string, unknown>) => {
-    return {
-      token: (search.token as string) || '',
-    };
-  },
+  beforeLoad: requireGuest,
+  validateSearch: z.object({ token: searchString.catch('') }),
 });
 
 function ResetPasswordPage() {

@@ -1,22 +1,16 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useEffect } from 'react';
-
-type ResetPasswordSearch = {
-  token: string;
-};
+import { z } from 'zod';
+import { searchString } from '@/shared/lib/searchParams';
 
 export const Route = createFileRoute('/reset-password')({
   component: RedirectToResetPassword,
-  validateSearch: (search: Record<string, unknown>): ResetPasswordSearch => {
-    return {
-      token: (search.token as string) || '',
-    };
-  },
+  validateSearch: z.object({ token: searchString.catch('') }),
 });
 
 function RedirectToResetPassword() {
   const navigate = useNavigate();
-  const { token } = Route.useSearch() as ResetPasswordSearch;
+  const { token } = Route.useSearch();
 
   useEffect(() => {
     navigate({

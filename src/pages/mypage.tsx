@@ -1,15 +1,12 @@
 import { Suspense } from 'react';
-import { createFileRoute, redirect } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
+import { requireAuth } from '@/shared/lib/auth';
 import { MyPage } from '../features/UserInfo';
 import { messages } from '../features/UserInfo/model/messages';
 
 export const Route = createFileRoute('/mypage')({
   component: MyPageComponent,
-  beforeLoad: async ({ context }) => {
-    if (!context.auth.isLoggedIn) {
-      throw redirect({ to: '/auth/login' });
-    }
-  },
+  beforeLoad: requireAuth,
 });
 
 function MyPageComponent() {

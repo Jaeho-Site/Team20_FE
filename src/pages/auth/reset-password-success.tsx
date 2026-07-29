@@ -1,22 +1,15 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { z } from 'zod';
 import { requestPasswordResetApi } from '@/entities/auth';
 import { EmailSentSuccess } from '@/shared/ui';
 
-type ResetPasswordSuccessSearch = {
-  email: string;
-};
-
 export const Route = createFileRoute('/auth/reset-password-success')({
   component: ResetPasswordSuccessPage,
-  validateSearch: (search: Record<string, unknown>): ResetPasswordSuccessSearch => {
-    return {
-      email: (search.email as string) || '',
-    };
-  },
+  validateSearch: z.object({ email: z.string().catch('') }),
 });
 
 function ResetPasswordSuccessPage() {
-  const { email } = Route.useSearch() as ResetPasswordSuccessSearch;
+  const { email } = Route.useSearch();
 
   const handleResendEmail = async (email: string) => {
     await requestPasswordResetApi({ email });

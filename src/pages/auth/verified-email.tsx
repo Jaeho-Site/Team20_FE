@@ -1,14 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { z } from 'zod';
+import { searchString } from '@/shared/lib/searchParams';
 import { useEmailVerification } from '@/features/auth';
 import { EmailVerificationStatus } from '@/features/auth';
 
 export const Route = createFileRoute('/auth/verified-email')({
   component: VerifyEmailPage,
-  validateSearch: (search: Record<string, unknown>) => {
-    return {
-      token: (search.token as string) || '',
-    };
-  },
+  validateSearch: z.object({ token: searchString.catch('') }),
 });
 
 function VerifyEmailPage() {

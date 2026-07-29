@@ -1,0 +1,35 @@
+{
+  "commit": "aa5026d39361e592b086828aecd90c9bf60248fb",
+  "commitShort": "aa5026d",
+  "branch": "main",
+  "dirty": false,
+  "label": "self-check",
+  "target": "nextjs",
+  "routes": [
+    "/location/1",
+    "/content/1"
+  ],
+  "notes": null,
+  "mock": true,
+  "skipBuild": false,
+  "backendEnvVar": null,
+  "measuredAt": "2026-07-29T05:50:51.825Z",
+  "finishedAt": "2026-07-29T05:53:14.716Z",
+  "node": "v22.14.0",
+  "lighthouse": {
+    "runsPerRoute": 1,
+    "formFactor": "mobile",
+    "throttlingMethod": "simulate",
+    "onlyCategories": "performance",
+    "chromeFlags": "--headless=new",
+    "version": "12.8.2"
+  },
+  "playwright": {
+    "viewport": {
+      "width": 412,
+      "height": 823
+    },
+    "deviceScaleFactor": 1.75,
+    "chromePath": "C:\\Users\\725c4\\AppData\\Local\\ms-playwright\\chromium-1194\\chrome-win\\chrome.exe"
+  }
+}

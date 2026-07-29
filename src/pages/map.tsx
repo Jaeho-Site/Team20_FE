@@ -1,4 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { z } from 'zod';
+import { searchString } from '@/shared/lib/searchParams';
 import { useState, useEffect } from 'react';
 import { Sidebar, convertItineraryLocationsToRoutePlaces } from '@/features/Sidebar';
 import { SidebarSearch } from '@/features/Sidebar/ui/SidebarSearch/SidebarSearch';
@@ -28,11 +30,7 @@ import { useItineraryDetail } from '@/entities/itinerary/api/queryfn';
 
 export const Route = createFileRoute('/map')({
   component: MapPage,
-  validateSearch: (search: Record<string, unknown>) => {
-    return {
-      itineraryId: (search.itineraryId as string) || undefined,
-    };
-  },
+  validateSearch: z.object({ itineraryId: searchString.optional().catch(undefined) }),
 });
 
 function MapPage() {
