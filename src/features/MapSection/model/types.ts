@@ -2,8 +2,9 @@ import type { RefObject } from 'react';
 
 export type LatLng = { lat: number; lng: number };
 
-// 카카오 SDK의 LatLng 인스턴스 — 좌표 접근이 프로퍼티가 아니라 메서드다
-export type KakaoLatLng = LatLng & { getLat(): number; getLng(): number };
+// 카카오 SDK의 LatLng 인스턴스 — 좌표 접근이 프로퍼티가 아니라 메서드다.
+// LatLng와 교차하지 않는다: 런타임 인스턴스에는 .lat/.lng 데이터 프로퍼티가 없다 (리뷰 지적)
+export type KakaoLatLng = { getLat(): number; getLng(): number };
 
 export type MapOptions = {
   center?: LatLng;
@@ -20,7 +21,7 @@ export type MapContainerUiProps = {
 };
 
 export type KakaoMap = {
-  setCenter(latlng: LatLng): void;
+  setCenter(latlng: LatLng | KakaoLatLng): void;
   getCenter(): KakaoLatLng;
   setLevel(level: number): void;
   setDraggable(flag: boolean): void;
@@ -77,7 +78,7 @@ export type KakaoMapsNS = {
   CustomOverlay: new (options: {
     content: string;
     map: KakaoMap;
-    position: LatLng;
+    position: LatLng | KakaoLatLng;
   }) => KakaoCustomOverlay;
   Polyline: new (options: {
     path: LatLng[];

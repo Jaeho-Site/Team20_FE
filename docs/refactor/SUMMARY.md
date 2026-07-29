@@ -21,8 +21,11 @@
 
 모든 실험은 같은 절차를 따랐다: **판정 기준을 측정 전에 문서에 고정**하고(사후 합리화 방지), 대안을 실제로 구현해(별도 브랜치: `experiment/B-react-hook-form`, `experiment/D-react-router`) **같은 조건**(같은 zod 스키마·같은 표시 계층·같은 검증 타이밍)에서 **재실행 가능한 스크립트**로 측정했다 — `npm run measure`(Lighthouse 5회 median + Playwright 이미지 지표, MSW 고정 픽스처로 백엔드 변동 차단), `scripts/check-field-messages.mjs`(UI 에러 표시 검사), `scripts/count-renders.mjs`(리렌더 계측), manualChunks 분리로 라이브러리별 gzip 기여분 산출. 모든 변경은 독립 컨텍스트의 적대적 코드 리뷰를 거쳤고(리뷰가 잡은 실결함: 숫자형 토큰 무력화 등), **부정적·혼합 결과를 그대로 기록**했으며, 측정 원본은 [`measurements/`](./measurements/)에 커밋해 제3자가 재현할 수 있다(사용자 본인의 독립 재현 기록: `measurements/aa5026d/self-check/`).
 
-## 그 외 문서
+## 부채 정리 결과
 
 - [`01-baseline.md`](./01-baseline.md) — Phase 0 측정 기반 복구 (CI green, vendor 청크 분리, vitest 도입, dist −68% 노이즈 제거)
-- `02-debt-removal.md` — Phase 2 부채 제거 수치 (진행 중)
+- [`02-debt-removal.md`](./02-debt-removal.md) — Phase 2: queryKey 중앙화 9→0, useEffect 페치 2→0, 데드 코드 −1,432줄, deps 54→52 (번들 diff 0B 실측 — "삭제로 줄었다" 거짓 서사 차단)
+- [`07-phase4-selective.md`](./07-phase4-selective.md) — Phase 4 **선별 수행**: 서사 연결 3건만 수행(as any 12→0, 폼 표준 4→5, FSD 역방향 2→0), **나머지 7건은 근거와 함께 의도적 미수행 종결** (main.py 분해 = 검증 수단 0, 딥임포트 치환 = 도구의 일 등)
 - [`TEMPLATE.md`](./TEMPLATE.md) — 실험 기록 형식
+
+**프로젝트 상태: 계획된 작업 전체 종결.** 실험 4종 완료 + 부채는 수행/의도적 미수행으로 전수 처분. 남은 것은 조건부 항목뿐(백엔드 복구 시 실험 C 재검증, contact API 계약 시 폼 표준화 등 — 각 문서에 명시).

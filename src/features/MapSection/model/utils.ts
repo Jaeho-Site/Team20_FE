@@ -5,6 +5,7 @@ import type {
   KakaoMap,
   KakaoCustomOverlay,
   LatLng,
+  KakaoLatLng,
   KakaoMarker,
   KakaoPolyline,
   KakaoMapsNS,
@@ -169,7 +170,7 @@ export function generateOverlayHTML(
 export function createMapOverlay(
   map: KakaoMap,
   place: Place | RoutePlace,
-  position: LatLng,
+  position: LatLng | KakaoLatLng,
   onClose: () => void,
   isLaptop: boolean = true,
   onAddToRoute?: (place: Place | RoutePlace) => void,
@@ -199,7 +200,7 @@ export function getOverlayPosition(
   map: KakaoMap,
   place: Place | RoutePlace,
   isLaptop: boolean,
-): LatLng {
+): LatLng | KakaoLatLng {
   return !isLaptop ? map.getCenter() : createLatLng(place.latitude, place.longitude);
 }
 

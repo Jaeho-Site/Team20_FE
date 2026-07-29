@@ -8,8 +8,17 @@ export const saveRouteSchema = z.object({
     .string()
     .trim()
     .min(1, SAVE_ROUTE_MODAL.VALIDATION.TITLE_REQUIRED)
-    .max(SAVE_ROUTE_MODAL.LIMITS.TITLE_MAX_LENGTH),
-  description: z.string().trim().max(SAVE_ROUTE_MODAL.LIMITS.DESCRIPTION_MAX_LENGTH),
+    .max(
+      SAVE_ROUTE_MODAL.LIMITS.TITLE_MAX_LENGTH,
+      `제목은 ${SAVE_ROUTE_MODAL.LIMITS.TITLE_MAX_LENGTH}자 이하여야 합니다.`,
+    ),
+  description: z
+    .string()
+    .trim()
+    .max(
+      SAVE_ROUTE_MODAL.LIMITS.DESCRIPTION_MAX_LENGTH,
+      `설명은 ${SAVE_ROUTE_MODAL.LIMITS.DESCRIPTION_MAX_LENGTH}자 이하여야 합니다.`,
+    ),
 });
 
 export type SaveRouteFormData = z.infer<typeof saveRouteSchema>;
