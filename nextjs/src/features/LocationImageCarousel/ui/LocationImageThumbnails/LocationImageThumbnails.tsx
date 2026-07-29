@@ -36,12 +36,12 @@ export function LocationImageThumbnails({
               : 'hover:scale-105 hover:shadow-[var(--shadow-lg)]'
           }`}
         >
-          <Image 
-            src={scene.image?.trim() || '/placeholder-image.jpg'} 
-            alt={scene.title} 
-            fill className="object-cover" 
-            sizes="(max-width: 768px) 50vw, 25vw" 
-            unoptimized
+          <Image
+            src={scene.image?.trim() || '/placeholder-image.jpg'}
+            alt={scene.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 50vw, 25vw"
           />
 
           <div className="absolute inset-0 bg-[var(--color-gray-900)]/20 hover:bg-[var(--color-gray-900)]/40 transition-colors" />
